@@ -1,6 +1,7 @@
 package com.booknet.apis.authentication.payload.request;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -51,7 +52,7 @@ public class SignupRequest {
         return this.roles;
     }
 
-    public void setRole(Set<String> roles) {
+    public void setRoles(Set<String> roles) {
         this.roles = roles;
     }
 }
