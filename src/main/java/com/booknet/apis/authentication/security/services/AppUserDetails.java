@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class AppUserDetails implements UserDetails {
-    private static final long SERIAL_VERSION_UID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private String id;
 
@@ -25,7 +25,8 @@ public class AppUserDetails implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public AppUserDetails(String id, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public AppUserDetails(String id, String username, String email, String password,
+                           Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -35,24 +36,24 @@ public class AppUserDetails implements UserDetails {
 
     public static AppUserDetails build(AppUser user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRole().name()))
+                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
+
         return new AppUserDetails(
                 user.get_id(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
-                authorities
-        );
+                authorities);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     public String getId() {
         return id;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
     }
 
     public String getEmail() {
@@ -65,16 +66,8 @@ public class AppUserDetails implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || this.getClass() != obj.getClass()) return false;
-        AppUserDetails user = (AppUserDetails) obj;
-        return Objects.equals(this.getId(), user.getId());
+    public String getUsername() {
+        return username;
     }
 
     @Override
@@ -95,5 +88,15 @@ public class AppUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        AppUserDetails user = (AppUserDetails) o;
+        return Objects.equals(id, user.getId());
     }
 }

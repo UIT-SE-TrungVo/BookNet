@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -49,24 +48,23 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         AppUserDetails userDetails = (AppUserDetails) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
+                .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(
-                new JwtResponse(
-                        jwt,
-                        userDetails.getId(),
-                        userDetails.getUsername(),
-                        userDetails.getEmail(),
-                        roles
-                )
-        );
+
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                roles));
     }
 
     @PostMapping("/signup")
@@ -76,43 +74,51 @@ public class AuthController {
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
+
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
+
         // Create new user's account
         AppUser user = new AppUser(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
+
         Set<String> strRoles = signUpRequest.getRoles();
         Set<AppRole> roles = new HashSet<>();
+
         if (strRoles == null) {
-            AppRole userRole = roleRepository.findByRole(EAppRole.ROLE_USER)
+            AppRole userRole = roleRepository.findByName(EAppRole.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: AppRole is not found."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
-                        AppRole adminRole = roleRepository.findByRole(EAppRole.ROLE_ADMIN)
+                        AppRole adminRole = roleRepository.findByName(EAppRole.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: AppRole is not found."));
                         roles.add(adminRole);
+
                         break;
                     case "mod":
-                        AppRole modRole = roleRepository.findByRole(EAppRole.ROLE_MODERATOR)
+                        AppRole modRole = roleRepository.findByName(EAppRole.ROLE_MODERATOR)
                                 .orElseThrow(() -> new RuntimeException("Error: AppRole is not found."));
                         roles.add(modRole);
+
                         break;
                     default:
-                        AppRole userRole = roleRepository.findByRole(EAppRole.ROLE_USER)
+                        AppRole userRole = roleRepository.findByName(EAppRole.ROLE_USER)
                                 .orElseThrow(() -> new RuntimeException("Error: AppRole is not found."));
                         roles.add(userRole);
                 }
             });
         }
+
         user.setRoles(roles);
         userRepository.save(user);
+
         return ResponseEntity.ok(new MessageResponse("AppUser registered successfully!"));
     }
 }

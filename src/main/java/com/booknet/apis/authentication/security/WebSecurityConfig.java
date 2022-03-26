@@ -20,29 +20,29 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
-        prePostEnabled = true
-)
+        // securedEnabled = true,
+        // jsr250Enabled = true,
+        prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
     @Autowired
-    private UserDetailsService userDetailsService;
+    UserDetailsService userDetailsService;
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
-    public AuthTokenFilter authenticationJwtTokenFilter(){
+    public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean
     @Override
-    public  AuthenticationManager authenticationManagerBean() throws Exception {
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
@@ -59,6 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()
                 .anyRequest().authenticated();
+
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

@@ -6,33 +6,32 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "roles")
 public class AppRole {
-
     @Id
-    private ObjectId _id;
+    private String _id;
 
-    private EAppRole role;
+    private EAppRole name;
 
     public AppRole() {
+
     }
 
-    public AppRole(EAppRole role) {
-        this._id = ObjectId.get();
-        this.role = role;
+    public AppRole(EAppRole name) {
+        this.name = name;
     }
 
-    public ObjectId get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(ObjectId _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 
-    public EAppRole getRole() {
-        return role;
+    public EAppRole getName() {
+        return name;
     }
 
-    public void setRole(EAppRole role) {
-        this.role = role;
+    public void setName(EAppRole name) {
+        this.name = name;
     }
 }

@@ -5,13 +5,11 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
 import java.util.Set;
 
 public class SignupRequest {
-
     @NotBlank
-    @Size(max = 32)
+    @Size(min = 3, max = 20)
     private String username;
 
     @NotBlank
@@ -19,37 +17,41 @@ public class SignupRequest {
     @Email
     private String email;
 
-    @NotBlank
-    @Size(max = 20)
-    private String password;
-
-    @DBRef
     private Set<String> roles;
 
-    public SignupRequest(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.roles = new HashSet<String>();
-    }
+    @NotBlank
+    @Size(min = 6, max = 40)
+    private String password;
 
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
     }
 
-    public Set<String> getRoles() {
-        return roles;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setRoles(Set<String> roles) {
+    public Set<String> getRoles() {
+        return this.roles;
+    }
+
+    public void setRole(Set<String> roles) {
         this.roles = roles;
     }
 }

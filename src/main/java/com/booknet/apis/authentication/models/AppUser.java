@@ -13,12 +13,11 @@ import java.util.Set;
 
 @Document(collection = "users")
 public class AppUser {
-
     @Id
-    private ObjectId _id;
+    private String _id;
 
     @NotBlank
-    @Size(max = 32)
+    @Size(max = 20)
     private String username;
 
     @NotBlank
@@ -27,28 +26,26 @@ public class AppUser {
     private String email;
 
     @NotBlank
-    @Size(max = 20)
+    @Size(max = 120)
     private String password;
 
     @DBRef
-    private Set<AppRole> roles;
+    private Set<AppRole> roles = new HashSet<>();
 
     public AppUser() {
     }
 
     public AppUser(String username, String email, String password) {
-        this._id = ObjectId.get();
         this.username = username;
         this.email = email;
         this.password = password;
-        this.roles = new HashSet<>();
     }
 
     public String get_id() {
-        return _id.toHexString();
+        return _id;
     }
 
-    public void set_id(ObjectId _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 
