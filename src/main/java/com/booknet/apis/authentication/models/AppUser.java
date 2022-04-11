@@ -1,5 +1,6 @@
 package com.booknet.apis.authentication.models;
 
+import com.booknet.apis.authentication.constants.AuthConstants;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -37,7 +38,7 @@ public class AppUser {
 
     public AppUser(String username, String email, String password) {
         this.username = username;
-        this.email = email;
+        this.email = email.isEmpty() ? AuthConstants.DEFAULT_EMAIL : email;
         this.password = password;
     }
 
