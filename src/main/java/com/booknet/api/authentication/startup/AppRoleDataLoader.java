@@ -20,12 +20,12 @@ public class AppRoleDataLoader implements ApplicationRunner {
 
     public void run(ApplicationArguments args) {
         for (EAppRole role : EAppRole.values()) {
-            Utils.log.print(this, "[Startup] add role to database", role.getClass().toString());
+            Utils.log.print(this, "[Startup] add role to database", role.toString());
             if (appRoleRepository.findByName(role).isEmpty()) {
                 appRoleRepository.save(new AppRole(role));
             }
             else {
-                Utils.log.print(this, "[Startup] role has existed", role.getClass().toString());
+                Utils.log.print(this, "[Startup] role has existed", role.toString());
             }
         }
     }

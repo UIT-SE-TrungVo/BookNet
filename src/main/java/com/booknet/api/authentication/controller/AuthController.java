@@ -66,6 +66,11 @@ public class AuthController {
                         .replace("@username", userDetails.getUsername())
                         .replace("@authorities", Utils.json.stringify(userDetails.getAuthorities()))
         );
+        Utils.log.print(this,
+                "Token info @authentication @tokenInfo"
+                        .replace("@authentication", Utils.json.stringify(authentication))
+                        .replace("@tokenInfo", Utils.json.stringify(jwt))
+        );
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
@@ -97,26 +102,26 @@ public class AuthController {
         Set<AppRole> roles = new HashSet<>();
 
         if (strRoles == null) {
-            AppRole userRole = roleRepository.findByName(EAppRole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: AppRole is not found."));
+            AppRole userRole = roleRepository.findByName(EAppRole.USER)
+                    .orElseThrow(() -> new RuntimeException("Error: USER ROLE is not found."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
-                        AppRole adminRole = roleRepository.findByName(EAppRole.ROLE_ADMIN)
+                        AppRole adminRole = roleRepository.findByName(EAppRole.ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: ADMIN ROLE is not found."));
                         roles.add(adminRole);
 
                         break;
                     case "mod":
-                        AppRole modRole = roleRepository.findByName(EAppRole.ROLE_MODERATOR)
+                        AppRole modRole = roleRepository.findByName(EAppRole.MODERATOR)
                                 .orElseThrow(() -> new RuntimeException("Error: MODERATOR ROLE is not found."));
                         roles.add(modRole);
 
                         break;
                     default:
-                        AppRole userRole = roleRepository.findByName(EAppRole.ROLE_USER)
+                        AppRole userRole = roleRepository.findByName(EAppRole.USER)
                                 .orElseThrow(() -> new RuntimeException("Error: USER ROLE is not found."));
                         roles.add(userRole);
                 }
