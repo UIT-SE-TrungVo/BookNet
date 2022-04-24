@@ -1,9 +1,31 @@
 package com.booknet.api.sample_module.payload.request;
 
-import com.booknet.api.sample_module.model.SampleModel;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
-public class SampleUpdateRequest extends SampleModel {
+public class SampleUpdateRequest {
+    @NotNull
+    Integer number;
+
+    @NotEmpty
+    String text;
+
     public SampleUpdateRequest() {
-        super();
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

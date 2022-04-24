@@ -6,10 +6,8 @@ import com.booknet.api.sample_module.payload.request.SampleNotifyRequest;
 import com.booknet.api.sample_module.payload.request.SampleUpdateRequest;
 import com.booknet.api.sample_module.service.SampleService;
 import com.booknet.base.payload.BaseResponse;
-import com.booknet.system.EventCenter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

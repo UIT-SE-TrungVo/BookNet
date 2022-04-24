@@ -10,6 +10,8 @@ import com.booknet.constants.IdPrefix;
 import com.booknet.system.EventCenter;
 import com.booknet.utils.IdGenerator;
 import com.booknet.utils.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ import java.util.Collection;
 
 @Service
 public class SampleService {
+    private static final Logger logger = LoggerFactory.getLogger(SampleService.class);
+
     @Autowired
     SampleRepository sampleRepository;
 
@@ -29,43 +33,37 @@ public class SampleService {
         SampleModel newDemoNumber = new SampleModel(newId, number, text);
         sampleRepository.insert(newDemoNumber);
 
-        Utils.log.print(this, "create SampleModel success", Utils.json.stringify(newDemoNumber));
+        logger.info("create SampleModel success {}", Utils.json.stringify(newDemoNumber));
         return newDemoNumber;
     }
 
     public Collection<SampleModel> getAllSamples() {
         Collection<SampleModel> samples = sampleRepository.findAll();
-        Utils.log.print(this, "Get all SampleModels");
+        logger.info("get all SampleModels {}", Utils.json.stringify(samples));
         return samples;
     }
 
     public SampleModel getSample(String id) {
         SampleModel sample = sampleRepository.findBy_id(id).orElse(null);
-        Utils.log.print(this, "Get SampleModel with id", id, Utils.json.stringify(sample));
+        logger.info("get SampleModel with id {} {}", id, Utils.json.stringify(sample));
         return sample;
     }
 
     public SampleModel updateSample(String id, SampleUpdateRequest reqData) {
         SampleModel dbValue = this.getSample(id);
-        if (!id.equals(reqData.get_id())) {
-            Utils.log.print(this, "id not match - updateSample halted", id, reqData.get_id());
-            return null;
-        }
 
         if (dbValue != null) {
             String jsonOldData = Utils.json.stringify(dbValue);
             dbValue.setNumber(reqData.getNumber());
             dbValue.setText(reqData.getText());
             sampleRepository.save(dbValue);
-            Utils.log.print(this,
-                    "update SampleModel success -\n OLD: @old -\n @NEW: @new"
-                            .replace("@old", jsonOldData)
-                            .replace("@new", Utils.json.stringify(reqData)
-                            )
+            logger.info("update SampleModel success OLD: {} - NEW: {}"
+                    , jsonOldData
+                    , Utils.json.stringify(reqData)
             );
             return dbValue;
         } else {
-            Utils.log.print(this, "cannot update non-exist SampleModel");
+            logger.info("cannot update non-exist SampleModel");
             return null;
         }
     }
@@ -74,10 +72,10 @@ public class SampleService {
         SampleModel deleteData = this.getSample(id);
         if (deleteData != null) {
             sampleRepository.delete(deleteData);
-            Utils.log.print(this, "remove SampleModel success", Utils.json.stringify(deleteData));
+            logger.info("remove SampleModel success {}", Utils.json.stringify(deleteData));
             return deleteData;
         } else {
-            Utils.log.print(this, "cannot delete non-exist SampleModel");
+            logger.info("cannot delete non-exist SampleModel");
             return null;
         }
     }
@@ -91,10 +89,10 @@ public class SampleService {
     }
 
     public void onNotified() {
-        Utils.log.print(this, "Has been notified");
+        logger.info("has been notified");
     }
 
     public void onNotifiedWithArgument(Integer number) {
-        Utils.log.print(this, "has been notified with argument", String.valueOf(number));
+        logger.info("has been notified with argument {}", number);
     }
 }
