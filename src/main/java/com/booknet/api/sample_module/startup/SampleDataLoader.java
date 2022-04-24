@@ -1,7 +1,9 @@
 package com.booknet.api.sample_module.startup;
 
 import com.booknet.api.sample_module.model.SampleModel;
+import com.booknet.api.sample_module.payload.request.SampleCreateRequest;
 import com.booknet.api.sample_module.repository.SampleRepository;
+import com.booknet.api.sample_module.service.SampleService;
 import com.booknet.constants.IdPrefix;
 import com.booknet.utils.IdGenerator;
 import com.booknet.utils.Utils;
@@ -12,10 +14,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SampleDataLoader implements ApplicationRunner {
+    SampleService sampleService;
     SampleRepository sampleRepository;
 
     @Autowired
-    public SampleDataLoader(SampleRepository repository) {
+    public SampleDataLoader(SampleService service, SampleRepository repository) {
+        this.sampleService = service;
         this.sampleRepository = repository;
     }
 
@@ -24,13 +28,11 @@ public class SampleDataLoader implements ApplicationRunner {
 
         final int NUM_GENERATED_MODEL = 10;
         for (int i = 0; i < NUM_GENERATED_MODEL; i++) {
-            String objectId = IdGenerator.createNew(IdPrefix.SAMPLE);
             Integer number = Utils.math.randomInt(0, 10);
             String text = "abcdef";
 
-            this.sampleRepository.insert(
-                    new SampleModel(objectId, number, text)
-            );
+            SampleCreateRequest req = new SampleCreateRequest(number, text);
+            this.sampleService.createSample(req);
         }
     }
 }

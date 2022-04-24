@@ -3,7 +3,7 @@ package com.booknet.utils;
 import java.util.Date;
 
 public class TimeUtils {
-    public Long getCurrentTimeStamp() {
+    public long getCurrentTimestamp() {
         Date now = new Date();
         return now.getTime();
     }

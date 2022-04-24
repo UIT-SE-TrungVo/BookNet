@@ -2,8 +2,10 @@ package com.booknet.api.sample_module.controller;
 
 import com.booknet.api.sample_module.model.SampleModel;
 import com.booknet.api.sample_module.payload.request.SampleCreateRequest;
+import com.booknet.api.sample_module.payload.request.SampleNotifyRequest;
 import com.booknet.api.sample_module.payload.request.SampleUpdateRequest;
 import com.booknet.api.sample_module.service.SampleService;
+import com.booknet.system.EventCenter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,5 +52,17 @@ public class SampleController {
     public ResponseEntity<?> removeSample(@PathVariable("id") String id) {
         SampleModel deleteSample = sampleService.removeSample(id);
         return ResponseEntity.ok(deleteSample);
+    }
+
+    @PostMapping("/notify")
+    public ResponseEntity<?> doNotify() {
+        sampleService.doNotify();
+        return ResponseEntity.ok(null);
+    }
+
+    @PostMapping("/notify-with-args")
+    public ResponseEntity<?> doNotifyWithArgument(@Valid @RequestBody SampleNotifyRequest req) {
+        sampleService.doNotifyWithArgument(req);
+        return ResponseEntity.ok(null);
     }
 }

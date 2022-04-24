@@ -10,6 +10,11 @@ public class SampleCreateRequest {
     @NotEmpty
     String text;
 
+    public SampleCreateRequest(Integer number, String text) {
+        this.number = number;
+        this.text = text;
+    }
+
     public Integer getNumber() {
         return number;
     }
