@@ -11,6 +11,7 @@ import com.booknet.api.authentication.repository.IAppRoleRepository;
 import com.booknet.api.authentication.repository.IAppUserRepository;
 import com.booknet.api.authentication.security.jwt.JwtUtils;
 import com.booknet.api.authentication.security.services.AppUserDetails;
+import com.booknet.base.payload.BaseResponse;
 import com.booknet.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -58,7 +59,7 @@ public class AuthController {
 
         AppUserDetails userDetails = (AppUserDetails) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         Utils.log.print(this,
@@ -72,11 +73,15 @@ public class AuthController {
                         .replace("@tokenInfo", Utils.json.stringify(jwt))
         );
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles));
+        return ResponseEntity.ok(
+                new BaseResponse(
+                        new JwtResponse(jwt,
+                                userDetails.getId(),
+                                userDetails.getUsername(),
+                                userDetails.getEmail(),
+                                roles)
+                )
+        );
     }
 
     @PostMapping("/signup")
@@ -131,6 +136,8 @@ public class AuthController {
         user.setRoles(roles);
         userRepository.save(user);
 
-        return ResponseEntity.ok(new MessageResponse("AppUser registered successfully!"));
+        return ResponseEntity.ok(new BaseResponse(
+                new MessageResponse("AppUser registered successfully!")
+        ));
     }
 }

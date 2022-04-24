@@ -31,7 +31,9 @@ public class SampleDataLoader implements ApplicationRunner {
             Integer number = Utils.math.randomInt(0, 10);
             String text = "abcdef";
 
-            SampleCreateRequest req = new SampleCreateRequest(number, text);
+            SampleCreateRequest req = new SampleCreateRequest();
+            req.setNumber(number);
+            req.setText(text);
             this.sampleService.createSample(req);
         }
     }

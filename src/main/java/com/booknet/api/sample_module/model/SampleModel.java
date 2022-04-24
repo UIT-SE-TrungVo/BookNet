@@ -17,6 +17,9 @@ public class SampleModel {
     @NotEmpty
     String text;
 
+    public SampleModel() {
+    }
+
     public SampleModel(String _id, Integer number, String text) {
         this._id = _id;
         this.number = number;

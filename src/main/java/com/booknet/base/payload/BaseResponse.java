@@ -22,15 +22,15 @@ public class BaseResponse {
         this.data = data;
     }
 
-    public boolean isError() {
-        return errCode != ErrCode.NONE;
-    }
-
     public long getErrCode() {
         return errCode;
     }
 
     public Object getData() {
         return data;
+    }
+
+    public boolean isError() {
+        return errCode != ErrCode.NONE;
     }
 }
