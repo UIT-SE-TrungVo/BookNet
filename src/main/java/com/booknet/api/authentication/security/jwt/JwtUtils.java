@@ -1,6 +1,7 @@
 package com.booknet.api.authentication.security.jwt;
 
 import com.booknet.api.authentication.security.services.AppUserDetails;
+import com.booknet.utils.Utils;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
