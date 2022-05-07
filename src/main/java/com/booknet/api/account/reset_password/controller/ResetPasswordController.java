@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.UUID;
-
 @Controller
 @RequestMapping("/user")
 public class ResetPasswordController {
@@ -20,16 +18,14 @@ public class ResetPasswordController {
 
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestParam("email") String userEmail) {
-        var user = resetPasswordService.getUserByEmail(userEmail);
-        if (user.isEmpty()) {
-            return ResponseEntity.badRequest().body(
-                    new BaseResponse(ErrCode.USER_NOT_FOUND_WITH_EMAIL, null)
+        var error = resetPasswordService.handlePasswordReset(userEmail);
+        if (error == ErrCode.NONE) {
+            return ResponseEntity.ok(
+                    new BaseResponse()
             );
         } else {
-            var token = UUID.randomUUID().toString();
-            resetPasswordService.createPasswordResetTokenForUser(user.get(), token);
-            return ResponseEntity.ok(
-                    new BaseResponse("OK")
+            return ResponseEntity.badRequest().body(
+                    new BaseResponse(error, null)
             );
         }
     }
