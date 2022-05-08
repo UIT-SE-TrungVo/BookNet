@@ -1,6 +1,5 @@
 package com.booknet.api.account.authentication.model;
 
-import com.booknet.api.account.authentication.constant.AuthConstants;
 import com.booknet.constants.IdPrefix;
 import com.booknet.utils.IdGenerator;
 import org.springframework.data.annotation.Id;
@@ -39,7 +38,7 @@ public class AppUser {
     public AppUser(String username, String email, String password) {
         this._id = IdGenerator.createNew(IdPrefix.USER);
         this.username = username;
-        this.email = email == null || email.isBlank() ? AuthConstants.DEFAULT_EMAIL : email;
+        this.email = email;
         this.password = password;
     }
 
