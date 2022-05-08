@@ -98,6 +98,7 @@ public class ResetPasswordService {
         var userId = user.get_id();
         var tokenDataInDb = resetPasswordRepository.findBy_id(userId);
         if (tokenDataInDb.isEmpty()) {
+            logger.error("Validation failed: no relevant data {} {}", user.get_id(), token);
             return false;
         } else {
             var expiryDate = tokenDataInDb.get().getExpiryDate();
@@ -106,7 +107,16 @@ public class ResetPasswordService {
             var tokenMatched = Objects.equals(token, tokenString);
             var tokenNotExpired = expiryDate.after(new Date());
 
-            return tokenMatched && tokenNotExpired;
+            if (!tokenMatched) {
+                logger.error("Validation failed: token not match {} {}", user.get_id(), token);
+                return false;
+            } else if (!tokenNotExpired) {
+                logger.error("Validation failed: token expired {} {}", user.get_id(), token);
+                return false;
+            } else {
+                logger.info("Validation success! {} {}", user.get_id(), token);
+                return true;
+            }
         }
     }
 }
