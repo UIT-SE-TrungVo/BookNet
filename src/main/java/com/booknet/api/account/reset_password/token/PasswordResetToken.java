@@ -17,6 +17,8 @@ public class PasswordResetToken {
     public PasswordResetToken(AppUser user, String token) {
         this.token = token;
         this.user = user;
+
+        this.set_id(user.get_id());
     }
 
     public String get_id() {

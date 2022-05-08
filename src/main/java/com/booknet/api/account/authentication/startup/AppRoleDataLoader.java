@@ -1,6 +1,6 @@
 package com.booknet.api.account.authentication.startup;
 
-import com.booknet.api.account.authentication.repository.IAppRoleRepository;
+import com.booknet.api.account.authentication.repository.AppRoleRepository;
 import com.booknet.api.account.authentication.model.AppRole;
 import com.booknet.api.account.authentication.model.EAppRole;
 import com.booknet.utils.Utils;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AppRoleDataLoader implements ApplicationRunner {
-    IAppRoleRepository appRoleRepository;
+    AppRoleRepository appRoleRepository;
 
     @Autowired
-    public AppRoleDataLoader(IAppRoleRepository repository) {
+    public AppRoleDataLoader(AppRoleRepository repository) {
         this.appRoleRepository = repository;
     }
 

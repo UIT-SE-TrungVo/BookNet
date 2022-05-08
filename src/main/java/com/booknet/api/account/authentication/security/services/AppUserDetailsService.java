@@ -1,7 +1,7 @@
 package com.booknet.api.account.authentication.security.services;
 
 import com.booknet.api.account.authentication.model.AppUser;
-import com.booknet.api.account.authentication.repository.IAppUserRepository;
+import com.booknet.api.account.authentication.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AppUserDetailsService implements UserDetailsService {
     @Autowired
-    IAppUserRepository userRepository;
+    AppUserRepository userRepository;
 
     @Override
     @Transactional

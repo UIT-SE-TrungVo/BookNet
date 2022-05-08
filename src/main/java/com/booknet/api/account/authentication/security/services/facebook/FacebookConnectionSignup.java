@@ -1,7 +1,7 @@
 package com.booknet.api.account.authentication.security.services.facebook;
 
 import com.booknet.api.account.authentication.model.AppUser;
-import com.booknet.api.account.authentication.repository.IAppUserRepository;
+import com.booknet.api.account.authentication.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
@@ -13,7 +13,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 public class FacebookConnectionSignup implements ConnectionSignUp {
 
     @Autowired
-    private IAppUserRepository userRepository;
+    private AppUserRepository userRepository;
 
     @Override
     public String execute(Connection<?> connection) {
