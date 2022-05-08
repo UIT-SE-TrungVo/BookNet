@@ -1,5 +1,6 @@
 package com.booknet.api.account.reset_password.controller;
 
+import com.booknet.api.account.reset_password.payload.ResetPasswordRenewRequest;
 import com.booknet.api.account.reset_password.payload.ResetPasswordSubmitTokenRequest;
 import com.booknet.api.account.reset_password.service.ResetPasswordService;
 import com.booknet.base.payload.BaseResponse;
@@ -35,8 +36,33 @@ public class ResetPasswordController {
     public ResponseEntity<?> submitResetToken(
             @Valid @RequestBody ResetPasswordSubmitTokenRequest req
     ) {
-        return ResponseEntity.ok(
-                new BaseResponse()
-        );
+        var error = resetPasswordService.handleTokenSubmit(req);
+        if (error == ErrCode.NONE) {
+            return ResponseEntity.ok(
+                    new BaseResponse()
+            );
+        }
+        else {
+            return ResponseEntity.badRequest().body(
+                new BaseResponse(error, null)
+            );
+        }
+    }
+
+    @PostMapping("/reset-password/renew/")
+    public ResponseEntity<?> submitResetToken(
+            @Valid @RequestBody ResetPasswordRenewRequest req
+    ) {
+        var error = resetPasswordService.handleChangePassword(req);
+        if (error == ErrCode.NONE) {
+            return ResponseEntity.ok(
+                    new BaseResponse()
+            );
+        }
+        else {
+            return ResponseEntity.badRequest().body(
+                    new BaseResponse(error, null)
+            );
+        }
     }
 }

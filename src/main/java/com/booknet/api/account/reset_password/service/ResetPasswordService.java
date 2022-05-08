@@ -1,8 +1,9 @@
 package com.booknet.api.account.reset_password.service;
 
 import com.booknet.api.account.authentication.model.AppUser;
-import com.booknet.api.account.authentication.repository.AppUserRepository;
+import com.booknet.api.account.authentication.service.AppUserService;
 import com.booknet.api.account.reset_password.config.ResetPasswordConfig;
+import com.booknet.api.account.reset_password.payload.ResetPasswordRenewRequest;
 import com.booknet.api.account.reset_password.payload.ResetPasswordSubmitTokenRequest;
 import com.booknet.api.account.reset_password.repository.ResetPasswordRepository;
 import com.booknet.api.account.reset_password.token.PasswordResetToken;
@@ -10,26 +11,30 @@ import com.booknet.api.account.reset_password.utils.ResetPasswordUtils;
 import com.booknet.constants.ErrCode;
 import com.booknet.system.mail.MailService;
 import com.booknet.system.mail.model.TextEmail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class ResetPasswordService {
+    private static final Logger logger = LoggerFactory.getLogger(AppUserService.class);
+
     @Autowired
     ResetPasswordRepository resetPasswordRepository;
 
     @Autowired
-    AppUserRepository appUserRepository;
+    AppUserService appUserService;
 
     public long handleResetRequest(String email) {
-        var user = this._getUserByEmail(email);
+        var user = appUserService.getUserByEmail(email);
         if (user.isEmpty()) {
+            logger.error("No user found with email {}", email);
             return ErrCode.USER_NOT_FOUND_WITH_EMAIL;
-        }
-        else {
+        } else {
             var token = ResetPasswordUtils.getRandomizedCode();
             this._createPasswordResetTokenForUser(user.get(), token);
 
@@ -42,6 +47,8 @@ public class ResetPasswordService {
             validationEmail.setSubject(subject);
             validationEmail.setContent(content);
             MailService.sendTextMail(validationEmail);
+
+            logger.info("Created token for password renew {} of user {}", token, email);
             return ErrCode.NONE;
         }
     }
@@ -49,15 +56,34 @@ public class ResetPasswordService {
     public long handleTokenSubmit(ResetPasswordSubmitTokenRequest request) {
         var email = request.getMail();
         var token = request.getToken();
-        var user = this._getUserByEmail(email);
+        var user = appUserService.getUserByEmail(email);
         if (user.isEmpty()) {
             return ErrCode.USER_NOT_FOUND_WITH_EMAIL;
-        }
-        else {
+        } else {
             if (_isTokenValidForUser(user.get(), token)) {
+                logger.info("Token match {} {}", token, email);
                 return ErrCode.NONE;
+            } else {
+                logger.error("Token mismatch {} {}", token, email);
+                return ErrCode.RESET_PASSWORD_TOKEN_MISMATCH;
             }
-            else {
+        }
+    }
+
+    public long handleChangePassword(ResetPasswordRenewRequest request) {
+        var email = request.getMail();
+        var token = request.getToken();
+        var user = appUserService.getUserByEmail(email);
+        if (user.isEmpty()) {
+            return ErrCode.USER_NOT_FOUND_WITH_EMAIL;
+        } else {
+            if (_isTokenValidForUser(user.get(), token)) {
+                var newPassword = request.getNewPassword();
+                appUserService.updateNewPassword(user.get(), newPassword);
+                logger.error("change password for user {} {}", user.get().get_id(), newPassword);
+                return ErrCode.NONE;
+            } else {
+                logger.error("cannot change password of user {} due to mismatch token {}", user.get().get_id(), token);
                 return ErrCode.RESET_PASSWORD_TOKEN_MISMATCH;
             }
         }
@@ -68,16 +94,19 @@ public class ResetPasswordService {
         resetPasswordRepository.save(userToken);
     }
 
-    private Optional<AppUser> _getUserByEmail(String email) {
-        return appUserRepository.findByEmail(email);
-    }
-
     private boolean _isTokenValidForUser(AppUser user, String token) {
         var userId = user.get_id();
-        var tokenInDb = resetPasswordRepository.findBy_id(userId);
-        if (tokenInDb.isEmpty()) return false;
-        else {
-            return Objects.equals(token, tokenInDb.get().toString());
+        var tokenDataInDb = resetPasswordRepository.findBy_id(userId);
+        if (tokenDataInDb.isEmpty()) {
+            return false;
+        } else {
+            var expiryDate = tokenDataInDb.get().getExpiryDate();
+            var tokenString = tokenDataInDb.get().getToken();
+
+            var tokenMatched = Objects.equals(token, tokenString);
+            var tokenNotExpired = expiryDate.after(new Date());
+
+            return tokenMatched && tokenNotExpired;
         }
     }
 }
