@@ -81,7 +81,7 @@ public class ResetPasswordService {
             if (_isTokenValidForUser(user.get(), token)) {
                 var newPassword = request.getNewPassword();
                 appUserService.updateNewPassword(user.get(), newPassword);
-                logger.error("change password for user {} {}", user.get().get_id(), newPassword);
+                logger.info("change password for user {} {}", user.get().get_id(), newPassword);
                 return ErrCode.NONE;
             } else {
                 logger.error("cannot change password of user {} due to mismatch token {}", user.get().get_id(), token);
