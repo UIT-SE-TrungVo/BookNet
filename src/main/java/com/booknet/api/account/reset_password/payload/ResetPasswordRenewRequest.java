@@ -4,7 +4,7 @@ import javax.validation.constraints.NotEmpty;
 
 public class ResetPasswordRenewRequest {
     @NotEmpty
-    String mail;
+    String email;
 
     @NotEmpty
     String token;
@@ -15,12 +15,12 @@ public class ResetPasswordRenewRequest {
     public ResetPasswordRenewRequest() {
     }
 
-    public String getMail() {
-        return mail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getToken() {

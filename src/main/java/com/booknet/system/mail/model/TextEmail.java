@@ -1,9 +1,10 @@
 package com.booknet.system.mail.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TextEmail {
-    List<String> recipients;
+    List<String> recipients = new ArrayList<>();
     String subject;
     String content;
 

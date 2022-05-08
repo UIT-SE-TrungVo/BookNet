@@ -32,8 +32,9 @@ public class FacebookSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/login*", "/signin/**", "/signup/**").permitAll()
+        http.cors().and().csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/api/auth/facebook/**").permitAll()
                 .and()
                 .httpBasic();
     }

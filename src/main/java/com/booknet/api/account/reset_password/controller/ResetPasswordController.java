@@ -12,15 +12,18 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/api/reset-password")
 public class ResetPasswordController {
     @Autowired
     ResetPasswordService resetPasswordService;
 
-    @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequestParam("email") String userEmail) {
-        var error = resetPasswordService.handleResetRequest(userEmail);
+    @PostMapping("/request-token/email={email}")
+    public ResponseEntity<?> requestToken(
+            @PathVariable("email") String userEmail
+    ) {
+        var error = resetPasswordService.handleRequestToken(userEmail);
         if (error == ErrCode.NONE) {
             return ResponseEntity.ok(
                     new BaseResponse()
@@ -32,25 +35,24 @@ public class ResetPasswordController {
         }
     }
 
-    @PostMapping("/reset-password/submit-token/")
+    @PostMapping("/submit-token")
     public ResponseEntity<?> submitResetToken(
             @Valid @RequestBody ResetPasswordSubmitTokenRequest req
     ) {
-        var error = resetPasswordService.handleTokenSubmit(req);
+        var error = resetPasswordService.handleSubmitToken(req);
         if (error == ErrCode.NONE) {
             return ResponseEntity.ok(
                     new BaseResponse()
             );
-        }
-        else {
+        } else {
             return ResponseEntity.badRequest().body(
-                new BaseResponse(error, null)
+                    new BaseResponse(error, null)
             );
         }
     }
 
-    @PostMapping("/reset-password/renew/")
-    public ResponseEntity<?> submitResetToken(
+    @PostMapping("/change-password")
+    public ResponseEntity<?> submitChangePassword(
             @Valid @RequestBody ResetPasswordRenewRequest req
     ) {
         var error = resetPasswordService.handleChangePassword(req);
@@ -58,8 +60,7 @@ public class ResetPasswordController {
             return ResponseEntity.ok(
                     new BaseResponse()
             );
-        }
-        else {
+        } else {
             return ResponseEntity.badRequest().body(
                     new BaseResponse(error, null)
             );

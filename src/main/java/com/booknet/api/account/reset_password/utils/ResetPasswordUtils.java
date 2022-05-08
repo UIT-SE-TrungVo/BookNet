@@ -17,7 +17,7 @@ public class ResetPasswordUtils {
         StringBuilder token = new StringBuilder();
 
         for (var i = 0; i < length; i++) {
-            var randomizedIndex = Utils.math.randomInt(0, charSet.length);
+            var randomizedIndex = Utils.math.randomInt(0, charSet.length - 1);
             var randomizedChar = charSet[randomizedIndex];
             token.append(randomizedChar);
         }

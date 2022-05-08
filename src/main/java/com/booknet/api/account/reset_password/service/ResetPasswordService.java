@@ -21,7 +21,7 @@ import java.util.Objects;
 
 @Service
 public class ResetPasswordService {
-    private static final Logger logger = LoggerFactory.getLogger(AppUserService.class);
+    private static final Logger logger = LoggerFactory.getLogger(ResetPasswordService.class);
 
     @Autowired
     ResetPasswordRepository resetPasswordRepository;
@@ -29,7 +29,7 @@ public class ResetPasswordService {
     @Autowired
     AppUserService appUserService;
 
-    public long handleResetRequest(String email) {
+    public long handleRequestToken(String email) {
         var user = appUserService.getUserByEmail(email);
         if (user.isEmpty()) {
             logger.error("No user found with email {}", email);
@@ -53,11 +53,12 @@ public class ResetPasswordService {
         }
     }
 
-    public long handleTokenSubmit(ResetPasswordSubmitTokenRequest request) {
-        var email = request.getMail();
+    public long handleSubmitToken(ResetPasswordSubmitTokenRequest request) {
+        var email = request.getEmail();
         var token = request.getToken();
         var user = appUserService.getUserByEmail(email);
         if (user.isEmpty()) {
+            logger.error("No user found with email {}", email);
             return ErrCode.USER_NOT_FOUND_WITH_EMAIL;
         } else {
             if (_isTokenValidForUser(user.get(), token)) {
@@ -71,7 +72,7 @@ public class ResetPasswordService {
     }
 
     public long handleChangePassword(ResetPasswordRenewRequest request) {
-        var email = request.getMail();
+        var email = request.getEmail();
         var token = request.getToken();
         var user = appUserService.getUserByEmail(email);
         if (user.isEmpty()) {

@@ -12,6 +12,8 @@ import com.booknet.api.account.authentication.security.jwt.JwtUtils;
 import com.booknet.api.account.authentication.security.services.AppUserDetails;
 import com.booknet.constants.ErrCode;
 import com.booknet.utils.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +30,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class AuthenticationService {
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
+
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -77,10 +81,12 @@ public class AuthenticationService {
 
     public long handleSignup(SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            logger.error("User cannot be created {}: taken username", signUpRequest.getUsername());
             return ErrCode.REGISTER_USERNAME_TAKEN;
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            logger.error("User cannot be created {}: taken email", signUpRequest.getEmail());
             return ErrCode.REGISTER_EMAIL_TAKEN;
         }
 
@@ -123,6 +129,8 @@ public class AuthenticationService {
 
         user.setRoles(roles);
         userRepository.save(user);
+
+        logger.info("User has been created successfully {}", user.get_id());
         return ErrCode.NONE;
     }
 }
