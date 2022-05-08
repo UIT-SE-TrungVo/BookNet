@@ -7,5 +7,5 @@ public class ResetPasswordConfig {
     public static final String[] RESET_CODE_CHAR_SET = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     public static final String MAIL_SUBJECT = "[BookNet] Reset password";
-    public static final String MAIL_CONTENT = "Pass the code below to reset your account's password: \n @code";
+    public static final String MAIL_CONTENT = "Enter the code below to reset your account's password: \n @code";
 }
