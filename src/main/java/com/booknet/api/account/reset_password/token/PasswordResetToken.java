@@ -3,9 +3,11 @@ package com.booknet.api.account.reset_password.token;
 import com.booknet.api.account.authentication.model.AppUser;
 import com.booknet.api.account.reset_password.utils.ResetPasswordUtils;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
+@Document(collection = "password_reset_tokens")
 public class PasswordResetToken {
 
     @Id
