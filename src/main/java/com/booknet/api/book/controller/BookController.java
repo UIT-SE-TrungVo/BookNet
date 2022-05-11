@@ -4,7 +4,7 @@ import com.booknet.api.book.model.BookModel;
 import com.booknet.api.book.request.BookCreateRequest;
 import com.booknet.api.book.request.BookNotifyRequest;
 import com.booknet.api.book.request.BookUpdateRequest;
-import com.booknet.api.book.service.PostService;
+import com.booknet.api.book.service.BookService;
 import com.booknet.base.payload.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +18,11 @@ import java.util.Collection;
 @RequestMapping("/api/book")
 public class BookController {
     @Autowired
-    PostService postService;
+    BookService bookService;
 
     @GetMapping
     public ResponseEntity<?> getAllSample() {
-        Collection<?> samples = postService.getAllSamples();
+        Collection<?> samples = bookService.getAllBooks();
         return ResponseEntity.ok(
                 new BaseResponse(samples.toArray())
         );
@@ -30,15 +30,15 @@ public class BookController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable("id") String id) {
-        BookModel sample = postService.getSample(id);
+        BookModel model = bookService.getSample(id);
         return ResponseEntity.ok(
-                new BaseResponse(sample)
+                new BaseResponse(model)
         );
     }
 
     @PostMapping
     public ResponseEntity<?> createSample(@Valid @RequestBody BookCreateRequest req) {
-        BookModel newModel = postService.createSample(req);
+        BookModel newModel = bookService.createBook(req);
         return ResponseEntity.ok(
                 new BaseResponse(newModel)
         );
@@ -49,7 +49,7 @@ public class BookController {
             @PathVariable("id") String id,
             @Valid @RequestBody BookUpdateRequest req
     ) {
-        BookModel editedModel = postService.updateSample(id, req);
+        BookModel editedModel = bookService.updateBook(id, req);
         return ResponseEntity.ok(
                 new BaseResponse(editedModel)
         );
@@ -57,7 +57,7 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeSample(@PathVariable("id") String id) {
-        BookModel deleteSample = postService.removeSample(id);
+        BookModel deleteSample = bookService.removeBook(id);
         return ResponseEntity.ok(
                 new BaseResponse(deleteSample)
         );
@@ -65,7 +65,7 @@ public class BookController {
 
     @PostMapping("/notify")
     public ResponseEntity<?> doNotify() {
-        postService.doNotify();
+        bookService.doNotify();
         return ResponseEntity.ok(
                 new BaseResponse(null)
         );
@@ -73,7 +73,7 @@ public class BookController {
 
     @PostMapping("/notify-with-args")
     public ResponseEntity<?> doNotifyWithArgument(@Valid @RequestBody BookNotifyRequest req) {
-        postService.doNotifyWithArgument(req);
+        bookService.doNotifyWithArgument(req);
         return ResponseEntity.ok(
                 new BaseResponse(null)
         );

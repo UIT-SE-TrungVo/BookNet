@@ -1,6 +1,6 @@
 package com.booknet.api.book.startup;
 
-import com.booknet.api.book.service.PostService;
+import com.booknet.api.book.service.BookService;
 import com.booknet.constants.EvId;
 import com.booknet.system.EventCenter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BookListener implements ApplicationRunner {
-    PostService postService;
+    BookService postService;
 
     @Autowired
-    public BookListener(PostService service) {
+    public BookListener(BookService service) {
         this.postService = service;
     }
 

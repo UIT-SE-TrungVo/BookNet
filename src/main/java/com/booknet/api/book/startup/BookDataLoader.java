@@ -2,7 +2,7 @@ package com.booknet.api.book.startup;
 
 import com.booknet.api.book.repository.BookRepository;
 import com.booknet.api.book.request.BookCreateRequest;
-import com.booknet.api.book.service.PostService;
+import com.booknet.api.book.service.BookService;
 import com.booknet.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BookDataLoader implements ApplicationRunner {
-    PostService postService;
+    BookService postService;
     BookRepository bookRepository;
 
     @Autowired
-    public BookDataLoader(PostService service, BookRepository repository) {
+    public BookDataLoader(BookService service, BookRepository repository) {
         this.postService = service;
         this.bookRepository = repository;
     }
@@ -31,7 +31,7 @@ public class BookDataLoader implements ApplicationRunner {
             BookCreateRequest req = new BookCreateRequest();
             req.setNumber(number);
             req.setText(text);
-            this.postService.createSample(req);
+            this.postService.createBook(req);
         }
     }
 }

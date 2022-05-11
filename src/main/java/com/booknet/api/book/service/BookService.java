@@ -19,63 +19,63 @@ import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 @Service
-public class PostService {
-    private static final Logger logger = LoggerFactory.getLogger(PostService.class);
+public class BookService {
+    private static final Logger logger = LoggerFactory.getLogger(BookService.class);
 
     @Autowired
-    BookRepository sampleRepository;
+    BookRepository bookRepository;
 
-    public BookModel createSample(BookCreateRequest reqData) {
+    public BookModel createBook(BookCreateRequest reqData) {
         String newId = IdGenerator.createNew(IdPrefix.SAMPLE);
         Integer number = reqData.getNumber();
         String text = reqData.getText();
 
         BookModel newDemoNumber = new BookModel(newId, number, text);
-        sampleRepository.insert(newDemoNumber);
+        bookRepository.insert(newDemoNumber);
 
-        logger.info("create SampleModel success {}", Utils.json.stringify(newDemoNumber));
+        logger.info("create BookModel success {}", Utils.json.stringify(newDemoNumber));
         return newDemoNumber;
     }
 
-    public Collection<BookModel> getAllSamples() {
-        Collection<BookModel> samples = sampleRepository.findAll();
-        logger.info("get all SampleModels {}", Utils.json.stringify(samples));
-        return samples;
+    public Collection<BookModel> getAllBooks() {
+        Collection<BookModel> books = bookRepository.findAll();
+        logger.info("get all BookModel {}", Utils.json.stringify(books));
+        return books;
     }
 
     public BookModel getSample(String id) {
-        BookModel sample = sampleRepository.findBy_id(id).orElse(null);
-        logger.info("get SampleModel with id {} {}", id, Utils.json.stringify(sample));
-        return sample;
+        BookModel book = bookRepository.findBy_id(id).orElse(null);
+        logger.info("get BookModel with id {} {}", id, Utils.json.stringify(book));
+        return book;
     }
 
-    public BookModel updateSample(String id, BookUpdateRequest reqData) {
+    public BookModel updateBook(String id, BookUpdateRequest reqData) {
         BookModel dbValue = this.getSample(id);
 
         if (dbValue != null) {
             String jsonOldData = Utils.json.stringify(dbValue);
             dbValue.setNumber(reqData.getNumber());
             dbValue.setText(reqData.getText());
-            sampleRepository.save(dbValue);
-            logger.info("update SampleModel success OLD: {} - NEW: {}"
+            bookRepository.save(dbValue);
+            logger.info("update BookModel success OLD: {} - NEW: {}"
                     , jsonOldData
                     , Utils.json.stringify(reqData)
             );
             return dbValue;
         } else {
-            logger.info("cannot update non-exist SampleModel");
+            logger.info("cannot update non-exist BookModel");
             return null;
         }
     }
 
-    public BookModel removeSample(String id) {
+    public BookModel removeBook(String id) {
         BookModel deleteData = this.getSample(id);
         if (deleteData != null) {
-            sampleRepository.delete(deleteData);
-            logger.info("remove SampleModel success {}", Utils.json.stringify(deleteData));
+            bookRepository.delete(deleteData);
+            logger.info("remove BookModel success {}", Utils.json.stringify(deleteData));
             return deleteData;
         } else {
-            logger.info("cannot delete non-exist SampleModel");
+            logger.info("cannot delete non-exist BookModel");
             return null;
         }
     }
