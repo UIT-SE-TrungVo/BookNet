@@ -1,4 +1,4 @@
-package com.booknet.api.book.startup;
+package com.booknet.api.post.startup;
 
 import com.booknet.api.book.service.PostService;
 import com.booknet.constants.EvId;
@@ -9,11 +9,11 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookListener implements ApplicationRunner {
+public class PostListener implements ApplicationRunner {
     PostService postService;
 
     @Autowired
-    public BookListener(PostService service) {
+    public PostListener(PostService service) {
         this.postService = service;
     }
 

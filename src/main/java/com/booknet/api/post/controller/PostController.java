@@ -1,4 +1,4 @@
-package com.booknet.api.book.controller;
+package com.booknet.api.post.controller;
 
 import com.booknet.api.book.model.BookModel;
 import com.booknet.api.book.request.BookCreateRequest;
@@ -15,8 +15,8 @@ import java.util.Collection;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/book")
-public class BookController {
+@RequestMapping("/api/post")
+public class PostController {
     @Autowired
     PostService postService;
 

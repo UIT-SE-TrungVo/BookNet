@@ -19,8 +19,8 @@ import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 @Service
-public class BookService {
-    private static final Logger logger = LoggerFactory.getLogger(BookService.class);
+public class PostService {
+    private static final Logger logger = LoggerFactory.getLogger(PostService.class);
 
     @Autowired
     BookRepository sampleRepository;
