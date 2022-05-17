@@ -14,20 +14,20 @@ import java.util.Set;
 @Document(collection = "users")
 public class AppUser {
     @Id
-    private String _id;
+    protected String _id;
 
     @NotBlank
     @Size(max = 20)
-    private String username;
+    protected String username;
 
     @NotBlank
     @Size(max = 50)
     @Email
-    private String email;
+    protected String email;
 
     @NotBlank
     @Size(max = 120)
-    private String password;
+    protected String password;
 
     private Set<AppRole> roles = new HashSet<>();
 
@@ -40,6 +40,13 @@ public class AppUser {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public AppUser(VerifyingUser verifyingUser) {
+        this._id = verifyingUser.get_id();
+        this.username = verifyingUser.getUsername();
+        this.email = verifyingUser.getEmail();
+        this.password = verifyingUser.getPassword();
     }
 
     public String get_id() {

@@ -7,10 +7,10 @@ import com.booknet.api.account.reset_password.payload.ResetPasswordRenewRequest;
 import com.booknet.api.account.reset_password.payload.ResetPasswordSubmitTokenRequest;
 import com.booknet.api.account.reset_password.repository.ResetPasswordRepository;
 import com.booknet.api.account.reset_password.token.PasswordResetToken;
-import com.booknet.api.account.reset_password.utils.ResetPasswordUtils;
 import com.booknet.constants.ErrCode;
 import com.booknet.system.mail.MailService;
 import com.booknet.system.mail.model.TextEmail;
+import com.booknet.system.token_generator.TokenGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,10 @@ public class ResetPasswordService {
             logger.error("No user found with email {}", email);
             return ErrCode.USER_NOT_FOUND_WITH_EMAIL;
         } else {
-            var token = ResetPasswordUtils.getRandomizedCode();
+            var tokenLength = ResetPasswordConfig.RESET_CODE_LENGTH;
+            var tokenCharSet = ResetPasswordConfig.RESET_CODE_CHAR_SET;
+
+            var token = TokenGenerator.getRandomizedString(tokenLength, tokenCharSet);
             this._createPasswordResetTokenForUser(user.get(), token);
 
             var subject = ResetPasswordConfig.MAIL_SUBJECT;
