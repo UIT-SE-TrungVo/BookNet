@@ -1,11 +1,14 @@
 package com.booknet.api.account.reset_password.token;
 
 import com.booknet.api.account.authentication.model.AppUser;
-import com.booknet.api.account.reset_password.utils.ResetPasswordUtils;
+import com.booknet.api.account.reset_password.config.ResetPasswordConfig;
+import com.booknet.utils.Utils;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
+@Document(collection = "password_reset_tokens")
 public class PasswordResetToken {
 
     @Id
@@ -22,7 +25,8 @@ public class PasswordResetToken {
         var userId = user.get_id();
         this.set_id(userId);
 
-        var expiryDate = ResetPasswordUtils.getExpiryDate(new Date());
+        var lifespan = ResetPasswordConfig.TOKEN_EXPIRATION_IN_SECOND;
+        var expiryDate = Utils.time.getExpiryDateFromNow(lifespan);
         this.setExpiryDate(expiryDate);
     }
 

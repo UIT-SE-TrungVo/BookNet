@@ -9,6 +9,9 @@ public class ErrCode {
     //register
     public static final long REGISTER_USERNAME_TAKEN = 3;
     public static final long REGISTER_EMAIL_TAKEN = 4;
+    public static final long VERIFY_INVALID_EMAIL = 5;
+    public static final long VERIFY_TOKEN_MISMATCH = 6;
+    public static final long VERIFY_TOKEN_EXPIRED = 7;
     //reset password
-    public static final long RESET_PASSWORD_TOKEN_MISMATCH = 5;
+    public static final long RESET_PASSWORD_TOKEN_MISMATCH = 8;
 }

@@ -7,13 +7,12 @@ import com.booknet.base.payload.BaseResponse;
 import com.booknet.constants.ErrCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
-@Controller
+@RestController
 @RequestMapping("/api/reset-password")
 public class ResetPasswordController {
     @Autowired

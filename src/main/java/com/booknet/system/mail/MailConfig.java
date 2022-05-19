@@ -9,7 +9,9 @@ public class MailConfig {
 
     public static final String APP_EMAIL = "booknet.app.seuit@gmail.com";
 
-    public static final String APP_PASSWORD = "z2_Pt;6}X)a(^Acr\"yahTQ7A";
+    public static final String EMAIL_PASSWORD = "z2_Pt;6}X)a(^Acr\"yahTQ7A";
+
+    public static final String APP_PASSWORD = "vxxyjjmpbbpnzmfd";
 
     public static final String RECEIVE_EMAIL = "booknet.app.seuit@gmail.com";
 }
