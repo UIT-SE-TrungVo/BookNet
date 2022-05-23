@@ -33,7 +33,7 @@ public class BookService {
         BookModel newDemoNumber = new BookModel(newId, number, text);
         bookRepository.insert(newDemoNumber);
 
-        logger.info("create BookModel success {}", Utils.json.stringify(newDemoNumber));
+//        logger.info("create BookModel success {}", Utils.json.stringify(newDemoNumber));
         return newDemoNumber;
     }
 

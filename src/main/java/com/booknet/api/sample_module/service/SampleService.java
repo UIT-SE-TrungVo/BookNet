@@ -33,7 +33,7 @@ public class SampleService {
         SampleModel newDemoNumber = new SampleModel(newId, number, text);
         sampleRepository.insert(newDemoNumber);
 
-        logger.info("create SampleModel success {}", Utils.json.stringify(newDemoNumber));
+//        logger.info("create SampleModel success {}", Utils.json.stringify(newDemoNumber));
         return newDemoNumber;
     }
 
