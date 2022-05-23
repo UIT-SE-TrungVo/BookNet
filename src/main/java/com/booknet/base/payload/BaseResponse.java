@@ -1,9 +1,7 @@
 package com.booknet.base.payload;
 
 import com.booknet.constants.ErrCode;
-import org.springframework.lang.NonNull;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class BaseResponse {
@@ -11,6 +9,11 @@ public class BaseResponse {
     long errCode;
 
     Object data;
+
+    public BaseResponse() {
+        this.errCode = ErrCode.NONE;
+        this.data = null;
+    }
 
     public BaseResponse(Object data) {
         this.errCode = ErrCode.NONE;
