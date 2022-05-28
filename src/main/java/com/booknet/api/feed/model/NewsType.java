@@ -1,5 +1,7 @@
 package com.booknet.api.feed.model;
 
+import org.jetbrains.annotations.Contract;
+
 public enum NewsType {
     POST(1),
     GUILD(2),
@@ -11,6 +13,7 @@ public enum NewsType {
         newsCode = typeInt;
     }
 
+    @Contract(pure = true)
     public int getNewsCode() {
         return newsCode;
     }

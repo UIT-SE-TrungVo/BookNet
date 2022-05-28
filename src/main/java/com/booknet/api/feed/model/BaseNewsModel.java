@@ -3,11 +3,10 @@ package com.booknet.api.feed.model;
 import com.booknet.constants.IdPrefix;
 import com.booknet.utils.IdGenerator;
 import nonapi.io.github.classgraph.json.Id;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.Instant;
 import java.util.LinkedList;
 
 public class BaseNewsModel {
@@ -26,8 +25,7 @@ public class BaseNewsModel {
     @NotEmpty
     protected int numberOfLikes;
 
-    @CreatedDate
-    protected Date createdDate;
+    protected long createdDate;
 
     protected LinkedList<CommentModel> commentList;
 
@@ -40,6 +38,8 @@ public class BaseNewsModel {
         this.type = type;
         this.caption = caption;
         this.numberOfLikes = 0;
+        this.commentList = new LinkedList<>();
+        this.createdDate = Instant.now().toEpochMilli();
     }
 
     public String get_id() {
@@ -74,11 +74,11 @@ public class BaseNewsModel {
         this.caption = caption;
     }
 
-    public Date getCreatedDate() {
+    public long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(long createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -90,30 +90,30 @@ public class BaseNewsModel {
         this.numberOfLikes = numberOfLikes;
     }
 
+    public void increaseNumberOfLikes() {
+        numberOfLikes += 1;
+    }
+
+    public void decreaseNumberOfLikes() {
+        numberOfLikes -= 1;
+    }
+
     public LinkedList<CommentModel> getCommentList() {
         return commentList;
     }
 
-    public void setCommentList(LinkedList<CommentModel> commentList) {
-        this.commentList = commentList;
-    }
-
-    private CommentModel getCommentById(String commendId) throws Exception {
-
-        throw new Exception("Comment not found!");
-    }
-
-    public void addComment(String content) {
+    public CommentModel addCommentAndGet(String content) {
         CommentModel comment = new CommentModel(content);
         commentList.add(comment);
+        return comment;
     }
 
-    public void addReplyComment(String commentId, String content) {
+    public ReplyCommentModel addReplyCommentAndGet(String commentId, String content) {
         for (CommentModel comment: commentList) {
             if (comment.get_id().equals(commentId)) {
-                comment.addReplyComment(content);
-                return;
+                return comment.addReplyCommentAndGet(content);
             }
         }
+        return null;
     }
 }

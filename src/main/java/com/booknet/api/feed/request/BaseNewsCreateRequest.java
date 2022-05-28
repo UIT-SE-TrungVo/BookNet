@@ -1,9 +1,9 @@
-package com.booknet.api.feed.request.news;
+package com.booknet.api.feed.request;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-public class PostNewsCreateRequest {
+public class BaseNewsCreateRequest {
 
     @NotNull
     private String userId;
@@ -11,10 +11,7 @@ public class PostNewsCreateRequest {
     @NotEmpty
     private String caption;
 
-    public PostNewsCreateRequest() {
-    }
-
-    public PostNewsCreateRequest(String userId, String caption) {
+    public BaseNewsCreateRequest(String userId, String caption) {
         this.userId = userId;
         this.caption = caption;
     }

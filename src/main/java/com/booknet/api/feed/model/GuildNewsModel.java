@@ -9,7 +9,7 @@ public class GuildNewsModel extends BaseNewsModel {
     @NotEmpty
     String guildId;
 
-    GuildNewsModel(String userId, String guildId, String caption) {
+    public GuildNewsModel(String userId, String guildId, String caption) {
         super(userId, NewsType.GUILD.getNewsCode(), caption);
         this.guildId = guildId;
     }

@@ -14,4 +14,6 @@ public class ErrCode {
     public static final long VERIFY_TOKEN_EXPIRED = 7;
     //reset password
     public static final long RESET_PASSWORD_TOKEN_MISMATCH = 8;
+    //post
+    public static final long POST_NOT_EXIST = 9;
 }

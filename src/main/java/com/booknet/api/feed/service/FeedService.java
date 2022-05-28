@@ -1,9 +1,12 @@
 package com.booknet.api.feed.service;
 
 import com.booknet.api.feed.model.*;
+import com.booknet.api.feed.repository.GuildNewsRepository;
 import com.booknet.api.feed.repository.PostNewsRepository;
-import com.booknet.api.feed.request.news.PostNewsCreateRequest;
+import com.booknet.api.feed.repository.ReviewNewsRepository;
+import com.booknet.api.feed.request.create.*;
 import com.booknet.api.feed.request.FeedNotifyRequest;
+import com.booknet.constants.ErrCode;
 import com.booknet.constants.EvId;
 import com.booknet.system.EventCenter;
 import com.booknet.utils.Utils;
@@ -23,6 +26,12 @@ public class FeedService {
     @Autowired
     PostNewsRepository postNewsRepository;
 
+    @Autowired
+    GuildNewsRepository guildNewsRepository;
+
+    @Autowired
+    ReviewNewsRepository reviewNewsRepository;
+
     public PostNewsModel createPostNews(PostNewsCreateRequest reqData) {
         String userId = reqData.getUserId();
         String caption = reqData.getCaption();
@@ -31,8 +40,97 @@ public class FeedService {
 
         postNewsRepository.insert(news);
 
-        logger.info("create SampleModel success {}", Utils.json.stringify(news));
+        logger.info("create post news success {}", Utils.json.stringify(news));
         return news;
+    }
+
+    public GuildNewsModel createGuildNews(GuildNewsCreateRequest reqData) {
+        String userId = reqData.getUserId();
+        String caption = reqData.getCaption();
+        String guildId = reqData.getGuildId();
+
+        GuildNewsModel news = new GuildNewsModel(userId, guildId, caption);
+
+        guildNewsRepository.insert(news);
+
+        logger.info("create guild news success {}", Utils.json.stringify(news));
+        return news;
+    }
+
+    public ReviewNewsModel createReviewNews(ReviewNewsCreateRequest reqData) {
+        String userId = reqData.getUserId();
+        String caption = reqData.getCaption();
+        String reviewId = reqData.getReviewId();
+
+        ReviewNewsModel news = new ReviewNewsModel(userId, reviewId, caption);
+
+        reviewNewsRepository.insert(news);
+
+        logger.info("create review news success {}", Utils.json.stringify(news));
+        return news;
+    }
+
+    public CommentModel createComment(CommentCreateRequest reqData){
+        String postId = reqData.getPostId();
+        int postType = reqData.getPostType();
+        String content = reqData.getContent();
+
+        CommentModel commentModel = null;
+
+        switch (NewsType.fromCode(postType)) {
+            case POST:
+                PostNewsModel postNewsModel = postNewsRepository.findBy_id(postId).orElse(null);
+                if (postNewsModel == null) return null;
+                commentModel = postNewsModel.addCommentAndGet(content);
+                postNewsRepository.save(postNewsModel);
+                break;
+            case GUILD:
+                GuildNewsModel guildNewsModel = guildNewsRepository.findBy_id(postId).orElse(null);
+                if (guildNewsModel == null) return null;
+                commentModel = guildNewsModel.addCommentAndGet(content);
+                guildNewsRepository.save(guildNewsModel);
+                break;
+            case REVIEW:
+                ReviewNewsModel reviewNewsModel = reviewNewsRepository.findBy_id(postId).orElse(null);
+                if (reviewNewsModel == null) return null;
+                commentModel = reviewNewsModel.addCommentAndGet(content);
+                reviewNewsRepository.save(reviewNewsModel);
+                break;
+        }
+
+        return commentModel;
+    }
+
+    public ReplyCommentModel createReplyComment(ReplyCommentCreateRequest reqData){
+        String postId = reqData.getPostId();
+        String commentId = reqData.getCommentId();
+        int postType = reqData.getPostType();
+        String content = reqData.getContent();
+
+        ReplyCommentModel replyCommentModel = null;
+
+        switch (NewsType.fromCode(postType)) {
+            case POST:
+                PostNewsModel postNewsModel = postNewsRepository.findBy_id(postId).orElse(null);
+                if (postNewsModel == null) return null;
+                replyCommentModel = postNewsModel.addReplyCommentAndGet(commentId, content);
+                postNewsRepository.save(postNewsModel);
+                break;
+            case GUILD:
+                GuildNewsModel guildNewsModel = guildNewsRepository.findBy_id(postId).orElse(null);
+                if (guildNewsModel == null) return null;
+                replyCommentModel = guildNewsModel.addReplyCommentAndGet(commentId, content);
+                guildNewsRepository.save(guildNewsModel);
+                break;
+            case REVIEW:
+                ReviewNewsModel reviewNewsModel = reviewNewsRepository.findBy_id(postId).orElse(null);
+                if (reviewNewsModel == null) return null;
+                replyCommentModel = reviewNewsModel.addReplyCommentAndGet(commentId, content);
+                reviewNewsRepository.save(reviewNewsModel);
+                break;
+        }
+
+        return replyCommentModel;
     }
 
     public Collection<BaseNewsModel> getUserFeed(String userId) {

@@ -3,6 +3,7 @@ package com.booknet.api.feed.model;
 import com.booknet.constants.IdPrefix;
 import com.booknet.utils.IdGenerator;
 
+import java.time.Instant;
 import java.util.LinkedList;
 
 public class CommentModel {
@@ -13,12 +14,13 @@ public class CommentModel {
 
     private LinkedList<ReplyCommentModel> replyList;
 
-    private String createdDate;
+    private long createdDate;
 
     public CommentModel(String content) {
         this._id = IdGenerator.createNew(IdPrefix.COMMENT);
         this.content = content;
         this.replyList = new LinkedList<>();
+        this.createdDate = Instant.now().toEpochMilli();
     }
 
     public String get_id() {
@@ -29,11 +31,11 @@ public class CommentModel {
         this._id = _id;
     }
 
-    public String getCreatedDate() {
+    public long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(long createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -53,8 +55,9 @@ public class CommentModel {
         this.replyList = replyList;
     }
 
-    public void addReplyComment(String content) {
+    public ReplyCommentModel addReplyCommentAndGet(String content) {
         ReplyCommentModel replyComment = new ReplyCommentModel(content);
         replyList.add(replyComment);
+        return replyComment;
     }
 }

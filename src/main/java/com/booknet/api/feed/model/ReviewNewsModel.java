@@ -9,7 +9,7 @@ public class ReviewNewsModel extends BaseNewsModel {
     @NotEmpty
     String reviewId;
 
-    ReviewNewsModel(String userId, String reviewId, String caption) {
+    public ReviewNewsModel(String userId, String reviewId, String caption) {
         super(userId, NewsType.GUILD.getNewsCode(), caption);
         this.reviewId = reviewId;
     }
