@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class BookNetApplication {
-    static final NetworkConfig netConfig = NetworkConfig.DEV_1;
+    static final NetworkConfig netConfig = NetworkConfig.DEV_2;
     static final String encryptor = "memoicunglen";
     static final Logger logger = LoggerFactory.getLogger(BookNetApplication.class);
 
