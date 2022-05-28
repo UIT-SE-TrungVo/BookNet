@@ -1,6 +1,6 @@
 package com.booknet.system.network;
 
-import com.booknet.config.network.NetworkConfig;
+import com.booknet.config.network.NetworkConnectType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +12,7 @@ import java.util.Properties;
 public class NetworkConfigLoader {
     private static final Logger logger = LoggerFactory.getLogger(NetworkConfigLoader.class);
 
-    public static Properties getConfig(NetworkConfig networkConfig) {
+    public static Properties getConfig(NetworkConnectType networkConfig) {
         var properties = new Properties();
         var fileName = getNetworkConfigFilePath(networkConfig);
         try (FileInputStream fis = new FileInputStream(fileName)) {
@@ -28,7 +28,7 @@ public class NetworkConfigLoader {
         return properties;
     }
 
-    public static String getNetworkConfigFilePath(NetworkConfig networkConfig) {
+    public static String getNetworkConfigFilePath(NetworkConnectType networkConfig) {
         switch (networkConfig) {
             case LOCAL:
                 return "src/main/resources/local.config";

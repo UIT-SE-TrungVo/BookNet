@@ -1,8 +1,8 @@
 package com.booknet;
 
 import com.booknet.config.network.NetworkConfig;
+import com.booknet.config.network.NetworkConnectType;
 import com.booknet.system.network.NetworkConfigLoader;
-import com.booknet.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class BookNetApplication {
-    static final NetworkConfig netConfig = NetworkConfig.DEV_2;
+    static final NetworkConnectType netConfig = NetworkConfig.CONNECT_TYPE;
     static final String encryptor = "memoicunglen";
     static final Logger logger = LoggerFactory.getLogger(BookNetApplication.class);
 
