@@ -27,7 +27,7 @@ public class BookNetApplication {
     private static void initNetwork() {
         var netConfigProps = NetworkConfigLoader.getConfig(netConfig);
         netConfigProps.forEach((key, val) -> {
-            logger.info("Setting network: {} ... {}", key.toString(), val.toString());
+//            logger.info("Setting network: {} ... {}", key.toString(), val.toString());
             System.setProperty(key.toString(), val.toString());
         });
     }
