@@ -15,7 +15,6 @@
     <description>bookNet</description>
     <properties>
         <java.version>11</java.version>
-        <java.runtime.version>11.0.15</java.runtime.version>
     </properties>
     <dependencies>
         <dependency>
