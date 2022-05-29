@@ -15,7 +15,7 @@ public class BookNetApplication {
     static final Logger logger = LoggerFactory.getLogger(BookNetApplication.class);
 
     public static void main(String[] args) {
-        initEncryptor();
+//        initEncryptor();
         initNetwork();
         SpringApplication.run(BookNetApplication.class, args);
     }
