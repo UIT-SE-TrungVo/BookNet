@@ -15,6 +15,7 @@
     <description>bookNet</description>
     <properties>
         <java.version>11</java.version>
+        <java.runtime.version>11.0.15</java.runtime.version>
     </properties>
     <dependencies>
         <dependency>
@@ -122,13 +123,6 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <release>11</release>
                 </configuration>
             </plugin>
         </plugins>
