@@ -2,8 +2,11 @@ package com.booknet.api.guild.controller;
 
 import com.booknet.api.guild.request.GuildJoinRequest;
 import com.booknet.api.guild.request.GuildLeaveRequest;
+import com.booknet.api.guild.request.GuildViewRequest;
+import com.booknet.api.guild.service.GuildService;
 import com.booknet.base.payload.BaseResponse;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,32 +18,31 @@ import javax.validation.Valid;
 @RequestMapping("/api/guild")
 public class GuildController {
 
+    @Autowired
+    GuildService guildService;
+
     @GetMapping
     public ResponseEntity<?> getListGuild() {
-        return ResponseEntity.ok(
-                new BaseResponse()
-        );
+        var response = guildService.getAllGuildInfo();
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getGuildInfo(@PathVariable("id") String guildId) {
-        return ResponseEntity.ok(
-                new BaseResponse()
-        );
+    @GetMapping("/view-guild")
+    public ResponseEntity<?> getGuildInfo(@Valid @RequestBody GuildViewRequest req) {
+        var response = guildService.getSpecificGuildInfo(req);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/join")
     public ResponseEntity<?> joinGuild(@Valid @RequestBody GuildJoinRequest req) {
-        return ResponseEntity.ok(
-                new BaseResponse()
-        );
+        var response = guildService.requestJoinGuild(req);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/leave")
     public ResponseEntity<?> leaveGuild(@Valid @RequestBody GuildLeaveRequest req) {
-        return ResponseEntity.ok(
-                new BaseResponse()
-        );
+        var response = guildService.requestLeaveGuild(req);
+        return ResponseEntity.ok(response);
     }
 
 }

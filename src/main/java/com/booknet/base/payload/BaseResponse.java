@@ -1,6 +1,7 @@
 package com.booknet.base.payload;
 
 import com.booknet.constants.ErrCode;
+import org.jetbrains.annotations.Contract;
 
 import javax.validation.constraints.NotNull;
 
@@ -35,5 +36,21 @@ public class BaseResponse {
 
     public boolean isError() {
         return errCode != ErrCode.NONE;
+    }
+
+
+    @Contract(value = "_ -> new", pure = true)
+    public static @org.jetbrains.annotations.NotNull BaseResponse error (long errCode) {
+        return new BaseResponse(errCode, null);
+    }
+
+    @Contract(value = "_ -> new", pure = true)
+    public static @org.jetbrains.annotations.NotNull BaseResponse ok (Object data) {
+        return new BaseResponse(ErrCode.NONE, data);
+    }
+
+    @Contract(value = " -> new", pure = true)
+    public static @org.jetbrains.annotations.NotNull BaseResponse ok() {
+        return new BaseResponse(ErrCode.NONE, null);
     }
 }

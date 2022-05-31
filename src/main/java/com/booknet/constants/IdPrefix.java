@@ -7,4 +7,5 @@ public class IdPrefix {
     public final static String COMMENT = "comment";
     public final static String REPLY_COMMENT = "reply_comment";
     public final static String SAMPLE = "sample";
+    public final static String GUILD = "guild";
 }
