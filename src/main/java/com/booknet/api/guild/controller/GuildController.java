@@ -4,18 +4,16 @@ import com.booknet.api.guild.request.GuildJoinRequest;
 import com.booknet.api.guild.request.GuildLeaveRequest;
 import com.booknet.api.guild.request.GuildViewRequest;
 import com.booknet.api.guild.service.GuildService;
-import com.booknet.base.payload.BaseResponse;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import com.booknet.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/guild")
+@RequestMapping("/api/guilds")
 public class GuildController {
 
     @Autowired
@@ -27,7 +25,7 @@ public class GuildController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/view-guild")
+    @GetMapping("/view")
     public ResponseEntity<?> getGuildInfo(@Valid @RequestBody GuildViewRequest req) {
         var response = guildService.getSpecificGuildInfo(req);
         return ResponseEntity.ok(response);

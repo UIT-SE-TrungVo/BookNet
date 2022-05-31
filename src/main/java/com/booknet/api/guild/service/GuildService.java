@@ -11,6 +11,7 @@ import com.booknet.api.guild.response.GuiViewAllResponse;
 import com.booknet.api.guild.response.GuiViewResponse;
 import com.booknet.base.payload.BaseResponse;
 import com.booknet.constants.ErrCode;
+import com.booknet.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,7 @@ public class GuildService {
 
         var name = guild.getName();
         var description = guild.getDescription();
-        var numMembers = guild.getMembers().size();
+        var numMember = guild.getMembers().size();
         var news = guild.getNews();
         var isMember = guild.isContainUser(user);
 
@@ -77,7 +78,7 @@ public class GuildService {
                 guildId
                 , name
                 , description
-                , numMembers
+                , numMember
                 , isMember ? news : null
                 , isMember
         ));
@@ -102,6 +103,7 @@ public class GuildService {
             return BaseResponse.error(ErrCode.GUILD_ALREADY_JOINED);
         } else {
             guild.addMember(user);
+            guildRepository.save(guild);
             logger.info("user {} JOIN guild {} SUCCESS", userId, guildId);
             return BaseResponse.ok();
         }
@@ -126,17 +128,20 @@ public class GuildService {
             return BaseResponse.error(ErrCode.GUILD_NOT_A_MEMBER);
         } else {
             guild.removeMember(user);
+            guildRepository.save(guild);
             logger.info("user {} LEAVE guild {} SUCCESS", userId, guildId);
             return BaseResponse.ok();
         }
     }
 
-    private class UserAndGuildValidation {
+    class UserAndGuildValidation {
         Optional<AppUser> user;
         Optional<GuildModel> guild;
-        Long errCode = null;
+        long errCode;
 
         public UserAndGuildValidation(String userId, String guildId) {
+            errCode = ErrCode.NONE;
+
             user = appUserService.getUserById(userId);
             if (user.isEmpty()) {
                 logger.error("user {} not found for view guild {} --> stop", userId, guildId);
@@ -146,7 +151,7 @@ public class GuildService {
             guild = guildRepository.findBy_id(guildId);
             if (guild.isEmpty()) {
                 logger.error("no guild with id {} found in database", guildId);
-                errCode = ErrCode.USER_NOT_FOUND;
+                errCode = ErrCode.GUILD_NOT_FOUND;
             }
         }
 
@@ -162,7 +167,7 @@ public class GuildService {
             return guild.orElse(null);
         }
 
-        public Long getErrCode() {
+        public long getErrCode() {
             return errCode;
         }
     }

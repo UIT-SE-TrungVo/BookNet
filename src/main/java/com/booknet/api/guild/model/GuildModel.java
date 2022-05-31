@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "guilds")
@@ -26,10 +27,10 @@ public class GuildModel {
     String description;
 
     @DBRef
-    List<AppUser> members;
+    List<AppUser> members = new ArrayList<>();
 
     @DBRef
-    List<GuildNewsModel> news;
+    List<GuildNewsModel> news = new ArrayList<>();
 
     public GuildModel() {
     }
@@ -89,7 +90,6 @@ public class GuildModel {
         List<AppUser> members = this.getMembers();
         if (!members.contains(user)) {
             members.add(user);
-            this.setMembers(members);
         }
     }
 
@@ -97,10 +97,7 @@ public class GuildModel {
         if (user == null) return;
 
         List<AppUser> members = this.getMembers();
-        if (members.contains(user)) {
-            members.remove(user);
-            this.setMembers(members);
-        }
+        members.remove(user);
     }
 
     public boolean isContainNews(GuildNewsModel news) {

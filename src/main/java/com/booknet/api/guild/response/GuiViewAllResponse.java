@@ -15,4 +15,28 @@ public class GuiViewAllResponse {
         this.guildNames = guildNames;
         this.guildDescription = guildDescription;
     }
+
+    public List<String> getGuildIds() {
+        return guildIds;
+    }
+
+    public void setGuildIds(List<String> guildIds) {
+        this.guildIds = guildIds;
+    }
+
+    public List<String> getGuildNames() {
+        return guildNames;
+    }
+
+    public void setGuildNames(List<String> guildNames) {
+        this.guildNames = guildNames;
+    }
+
+    public List<String> getGuildDescription() {
+        return guildDescription;
+    }
+
+    public void setGuildDescription(List<String> guildDescription) {
+        this.guildDescription = guildDescription;
+    }
 }

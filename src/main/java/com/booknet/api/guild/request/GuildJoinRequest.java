@@ -1,8 +1,14 @@
 package com.booknet.api.guild.request;
 
+import javax.validation.constraints.NotEmpty;
+
 public class GuildJoinRequest {
-    private String guildId;
-    private String userId;
+
+    @NotEmpty
+    String guildId;
+
+    @NotEmpty
+    String userId;
 
     public GuildJoinRequest() {
     }
