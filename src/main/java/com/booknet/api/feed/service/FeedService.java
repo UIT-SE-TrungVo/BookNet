@@ -35,8 +35,9 @@ public class FeedService {
     public PostNewsModel createPostNews(PostNewsCreateRequest reqData) {
         String userId = reqData.getUserId();
         String caption = reqData.getCaption();
+        String imageUrl = reqData.getImageUrl();
 
-        PostNewsModel news = new PostNewsModel(userId, caption);
+        PostNewsModel news = new PostNewsModel(userId, caption, imageUrl);
 
         postNewsRepository.insert(news);
 
