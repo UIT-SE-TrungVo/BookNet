@@ -34,4 +34,12 @@ public class AppUserService {
             logger.error("Cannot update password for user {}, USER NOT EXIST IN DATA", userId);
         }
     }
+
+    public Optional<AppUser> getUserById(String userid) {
+        if (!appUserRepository.existsBy_id(userid)) {
+            logger.error("user {} not found !", userid);
+        }
+        return appUserRepository.findBy_id(userid);
+
+    }
 }
