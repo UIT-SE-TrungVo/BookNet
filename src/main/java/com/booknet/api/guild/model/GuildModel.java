@@ -5,12 +5,15 @@ import com.booknet.api.feed.model.GuildNewsModel;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Document(collection = "guilds")
 public class GuildModel {
@@ -26,10 +29,10 @@ public class GuildModel {
     @Size(max = 120)
     String description;
 
-    @DBRef
+    @DocumentReference(collection = "users", lazy = true)
     List<AppUser> members = new ArrayList<>();
 
-    @DBRef
+    @DocumentReference(collection = "news_guild", lazy = true)
     List<GuildNewsModel> news = new ArrayList<>();
 
     public GuildModel() {
@@ -81,7 +84,7 @@ public class GuildModel {
     }
 
     public boolean isContainUser(AppUser user) {
-        return this.getMembers().contains(user);
+        return this.getMembers().stream().anyMatch(member -> Objects.equals(member.get_id(), user.get_id()));
     }
 
     public void addMember(AppUser user) {
@@ -97,18 +100,23 @@ public class GuildModel {
         if (user == null) return;
 
         List<AppUser> members = this.getMembers();
-        members.remove(user);
+        List<AppUser> listFiltered = new ArrayList<>();
+        for (AppUser member : members)
+            if (!Objects.equals(member.get_id(), user.get_id())) {
+                listFiltered.add(member);
+            }
+        this.setMembers(listFiltered);
     }
 
     public boolean isContainNews(GuildNewsModel news) {
-        return this.getNews().contains(news);
+        return this.getNews().stream().anyMatch(n -> Objects.equals(n.get_id(), news.get_id()));
     }
 
     public void addNews(GuildNewsModel news) {
         if (news == null) return;
 
         List<GuildNewsModel> listNews = this.getNews();
-        if (!listNews.contains(news)) {
+        if (!this.isContainNews(news)) {
             listNews.add(news);
             this.setNews(listNews);
         }
@@ -118,9 +126,13 @@ public class GuildModel {
         if (news == null) return;
 
         List<GuildNewsModel> listNews = this.getNews();
-        if (listNews.contains(news)) {
-            listNews.remove(news);
-            this.setNews(listNews);
+        if (this.isContainNews(news)) {
+            List<GuildNewsModel> listFiltered = new ArrayList<>();
+            for (GuildNewsModel n : listNews)
+                if (!Objects.equals(n.get_id(), news.get_id())) {
+                    listFiltered.add(n);
+                }
+            this.setNews(listFiltered);
         }
     }
 }

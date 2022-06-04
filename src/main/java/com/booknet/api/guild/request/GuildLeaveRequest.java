@@ -1,11 +1,12 @@
 package com.booknet.api.guild.request;
 
+import com.booknet.api.guild.model.GuildModel;
+
 import javax.validation.constraints.NotEmpty;
 
 public class GuildLeaveRequest {
 
-    @NotEmpty
-    String guildId;
+    GuildModel guildId;
 
     @NotEmpty
     String userId;
@@ -13,11 +14,11 @@ public class GuildLeaveRequest {
     public GuildLeaveRequest() {
     }
 
-    public String getGuildId() {
+    public GuildModel getGuildId() {
         return guildId;
     }
 
-    public void setGuildId(String guildId) {
+    public void setGuildId(GuildModel guildId) {
         this.guildId = guildId;
     }
 

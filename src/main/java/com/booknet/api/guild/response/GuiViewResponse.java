@@ -1,12 +1,13 @@
 package com.booknet.api.guild.response;
 
 import com.booknet.api.feed.model.GuildNewsModel;
+import com.booknet.api.guild.model.GuildModel;
 
 import java.util.List;
 
 public class GuiViewResponse {
 
-    String id;
+    GuildModel id;
 
     String name;
 
@@ -19,7 +20,7 @@ public class GuiViewResponse {
     boolean isJoined;
 
     public GuiViewResponse(
-            String id
+            GuildModel id
             , String name
             , String description
             , int numMembers
@@ -34,11 +35,11 @@ public class GuiViewResponse {
         this.isJoined = isJoined;
     }
 
-    public String getId() {
+    public GuildModel getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(GuildModel id) {
         this.id = id;
     }
 

@@ -1,9 +1,11 @@
 package com.booknet.api.account.authentication.model;
 
+import com.booknet.api.profile.model.ProfileModel;
 import com.booknet.constants.IdPrefix;
 import com.booknet.utils.IdGenerator;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -30,6 +32,9 @@ public class AppUser {
     protected String password;
 
     private Set<AppRole> roles = new HashSet<>();
+
+    @DocumentReference(lazy = true, collection = "profiles")
+    private ProfileModel profile;
 
     public AppUser() {
         this._id = IdGenerator.createNew(IdPrefix.USER);
@@ -87,5 +92,13 @@ public class AppUser {
 
     public void setRoles(Set<AppRole> roles) {
         this.roles = roles;
+    }
+
+    public ProfileModel getProfile() {
+        return profile;
+    }
+
+    public void setProfile(ProfileModel profile) {
+        this.profile = profile;
     }
 }
