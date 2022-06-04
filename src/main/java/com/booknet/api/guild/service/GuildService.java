@@ -2,6 +2,8 @@ package com.booknet.api.guild.service;
 
 import com.booknet.api.account.authentication.model.AppUser;
 import com.booknet.api.account.authentication.service.AppUserService;
+import com.booknet.api.guild.event.GuildJoinEvData;
+import com.booknet.api.guild.event.GuildLeaveEvData;
 import com.booknet.api.guild.model.GuildModel;
 import com.booknet.api.guild.repository.GuildRepository;
 import com.booknet.api.guild.request.GuildJoinRequest;
@@ -11,7 +13,8 @@ import com.booknet.api.guild.response.GuiViewAllResponse;
 import com.booknet.api.guild.response.GuiViewResponse;
 import com.booknet.base.payload.BaseResponse;
 import com.booknet.constants.ErrCode;
-import com.booknet.utils.Utils;
+import com.booknet.constants.EvId;
+import com.booknet.system.EventCenter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +54,7 @@ public class GuildService {
     }
 
     public BaseResponse getSpecificGuildInfo(GuildViewRequest req) {
-        var guildId = req.getGuildId();
+        GuildModel guildId = req.getGuildId();
         var userId = req.getUserId();
 
         logger.info("user {} attempts view guild {}", userId, guildId);
@@ -85,7 +88,7 @@ public class GuildService {
     }
 
     public BaseResponse requestJoinGuild(GuildJoinRequest req) {
-        var guildId = req.getGuildId();
+        GuildModel guildId = req.getGuildId();
         var userId = req.getUserId();
 
         logger.info("user {} attempts join guild {}", userId, guildId);
@@ -105,12 +108,13 @@ public class GuildService {
             guild.addMember(user);
             guildRepository.save(guild);
             logger.info("user {} JOIN guild {} SUCCESS", userId, guildId);
+            EventCenter.pub(EvId.USER_JOIN_GUILD, new GuildJoinEvData(userId, guild));
             return BaseResponse.ok();
         }
     }
 
     public BaseResponse requestLeaveGuild(GuildLeaveRequest req) {
-        var guildId = req.getGuildId();
+        GuildModel guildId = req.getGuildId();
         var userId = req.getUserId();
 
         logger.info("user {} attempts leave guild {}", userId, guildId);
@@ -129,6 +133,7 @@ public class GuildService {
         } else {
             guild.removeMember(user);
             guildRepository.save(guild);
+            EventCenter.pub(EvId.USER_LEAVE_GUILD, new GuildLeaveEvData(userId, guild));
             logger.info("user {} LEAVE guild {} SUCCESS", userId, guildId);
             return BaseResponse.ok();
         }
@@ -139,7 +144,7 @@ public class GuildService {
         Optional<GuildModel> guild;
         long errCode;
 
-        public UserAndGuildValidation(String userId, String guildId) {
+        public UserAndGuildValidation(String userId, GuildModel guildId) {
             errCode = ErrCode.NONE;
 
             user = appUserService.getUserById(userId);

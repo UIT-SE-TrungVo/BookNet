@@ -2,7 +2,6 @@ package com.booknet.api.profile.controller;
 
 import com.booknet.api.profile.payload.ProfileUpdateRequest;
 import com.booknet.api.profile.service.ProfileService;
-import com.booknet.base.payload.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,25 +12,22 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/profiles")
 public class ProfileController {
+
     @Autowired
     ProfileService profileService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable("id") String id) {
-        var model = profileService.getProfile(id);
-        return ResponseEntity.ok(
-                new BaseResponse(model)
-        );
+    public ResponseEntity<?> getUserProfile(@PathVariable("id") String id) {
+        var response = profileService.responseGetUserProfile(id);
+        return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateProfile(
-            @PathVariable("id") String id,
-            @Valid @RequestBody ProfileUpdateRequest req
+    @PostMapping("/{id}")
+    public ResponseEntity<?> updateUserProfile(
+            @PathVariable("id") String id
+            , @Valid @RequestBody ProfileUpdateRequest request
     ) {
-        var editedModel = profileService.updateProfile(id, req);
-        return ResponseEntity.ok(
-                new BaseResponse(editedModel)
-        );
+        var response = profileService.updateProfile(id, request);
+        return ResponseEntity.ok(response);
     }
 }

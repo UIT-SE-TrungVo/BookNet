@@ -1,14 +1,22 @@
 package com.booknet.api.profile.service;
 
+import com.booknet.api.account.authentication.model.AppUser;
+import com.booknet.api.account.authentication.repository.AppUserRepository;
+import com.booknet.api.guild.model.GuildModel;
 import com.booknet.api.profile.model.ProfileModel;
-import com.booknet.api.profile.event.ProfileCreateEventData;
 import com.booknet.api.profile.payload.ProfileUpdateRequest;
 import com.booknet.api.profile.repository.ProfileRepository;
-import com.booknet.utils.Utils;
+import com.booknet.base.payload.BaseResponse;
+import com.booknet.constants.ErrCode;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
 public class ProfileService {
@@ -17,45 +25,77 @@ public class ProfileService {
     @Autowired
     ProfileRepository profileRepository;
 
-    private void _createProfile(ProfileCreateEventData reqData) {
-        var appUser = reqData.getUser();
-        var id = appUser.get_id();
-        var firstName = reqData.getFirstName();
-        var lastName = reqData.getLastName();
-        var newProfile = new ProfileModel(id, firstName, lastName);
+    @Autowired
+    AppUserRepository appUserRepository;
 
-        logger.info("create ProfileModel success {}", Utils.json.stringify(newProfile));
-    }
-
-    public ProfileModel updateProfile(String id, ProfileUpdateRequest reqData) {
-        var dbValue = this.getProfile(id);
-        var firstName = reqData.getFirstName();
-        var lastName = reqData.getLastName();
-        var email = reqData.getEmail();
-
-        if (dbValue != null) {
-            String jsonOldData = Utils.json.stringify(dbValue);
-            dbValue.setFirstName(firstName);
-            dbValue.setLastName(lastName);
-            profileRepository.save(dbValue);
-            logger.info("update ProfileModel success OLD: {} - NEW: {}"
-                    , jsonOldData
-                    , Utils.json.stringify(reqData)
-            );
-            return dbValue;
-        } else {
-            logger.info("cannot update non-exist ProfileModel");
-            return null;
-        }
-    }
-
-    public ProfileModel getProfile(String id) {
-        var profile = profileRepository.findBy_id(id).orElse(null);
-        logger.info("get ProfileModel with id {} {}", id, Utils.json.stringify(profile));
+    public ProfileModel getOrCreateProfile(@NotNull AppUser appUser) {
+        var profile = profileRepository.findBy_id(appUser.get_id())
+                .orElse(new ProfileModel(appUser));
+        profileRepository.save(profile);
         return profile;
     }
 
-    public void onCreateAppUser(ProfileCreateEventData req) {
-        _createProfile(req);
+    public BaseResponse responseGetUserProfile(String userId) {
+        var user = appUserRepository.findBy_id(userId).orElse(null);
+        if (user == null) {
+            logger.error("cannot update for non-existed user {}", userId);
+            return BaseResponse.error(ErrCode.USER_NOT_FOUND);
+        } else {
+            var profile = profileRepository.findBy_id(userId).orElse(null);
+            return BaseResponse.ok(profile);
+        }
+    }
+
+    public BaseResponse updateProfile(@NotEmpty String userId, @NotNull ProfileUpdateRequest request) {
+        var user = appUserRepository.findBy_id(userId).orElse(null);
+        if (user == null) {
+            logger.error("cannot update for non-existed user {}", userId);
+            return BaseResponse.error(ErrCode.USER_NOT_FOUND);
+        } else {
+            var profile = this.getOrCreateProfile(user);
+            profile.setUrlImage(request.getUrlImage());
+            profile.setName(request.getName());
+            profile.setDob(request.getDob());
+            profile.setGender(request.getGender());
+            profileRepository.save(profile);
+            return BaseResponse.ok();
+        }
+    }
+
+    public void addUserToGuild(String userId, GuildModel guildModel) {
+        var user = appUserRepository.findBy_id(userId).orElse(null);
+        if (user == null) {
+            logger.error("cannot update for non-existed user {}", userId);
+            return;
+        }
+
+        var profile = this.getOrCreateProfile(user);
+        var listGuild = profile.getGuilds();
+        for (var guild : listGuild) {
+            if (Objects.equals(guild.get_id(), guildModel.get_id())) {
+                logger.error("user is in guild !");
+                return;
+            }
+        }
+        listGuild.add(guildModel);
+        profile.setGuilds(listGuild);
+        profileRepository.save(profile);
+    }
+
+    public void removeUserFromGuild(String userId, GuildModel guildModel) {
+        var user = appUserRepository.findBy_id(userId).orElse(null);
+        if (user == null) {
+            logger.error("cannot update for non-existed user {}", userId);
+            return;
+        }
+
+        var profile = this.getOrCreateProfile(user);
+        var listGuild = profile.getGuilds();
+        var filtered = new ArrayList<GuildModel>();
+        for (var guild : listGuild) {
+            if (!Objects.equals(guild.get_id(), guildModel.get_id())) filtered.add(guild);
+        }
+        profile.setGuilds(filtered);
+        profileRepository.save(profile);
     }
 }

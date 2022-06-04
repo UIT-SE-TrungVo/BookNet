@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface GuildRepository extends MongoRepository<GuildModel, String> {
-    Optional<GuildModel> findBy_id(String id);
+    Optional<GuildModel> findBy_id(GuildModel id);
 }

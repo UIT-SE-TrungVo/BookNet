@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface ProfileRepository extends MongoRepository<ProfileModel, String> {
     Optional<ProfileModel> findBy_id(String id);
+
+    boolean existsBy_id(String id);
 }

@@ -1,67 +1,70 @@
-package com.booknet.api.profile.model;
+package com.booknet.api.account.authentication.payload.response;
 
 import com.booknet.api.account.authentication.model.AppUser;
 import com.booknet.api.book.model.BookModel;
 import com.booknet.api.guild.model.GuildModel;
-import com.booknet.api.profile.config.ProfileDefaultConfig;
-import com.booknet.constants.Gender;
-import com.booknet.utils.Utils;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Document(collection = "profiles")
-public class ProfileModel {
-    @Id
-    String _id;
+public class SignInResponse {
+    private String token;
+    private String id;
+    private String username;
+    private String email;
+    private List<String> roles;
+    private String urlImage;
+    private String name;
+    private int gender;
+    private Date dob;
+    private List<BookModel> bookShelf;
+    private List<GuildModel> guilds ;
+    private List<AppUser> friend;
+    private Integer currentPoint;
+    private Integer highestPoint;
+    private Long creationDate;
 
-    String urlImage;
-
-    String name;
-
-    Gender gender;
-
-    Date dob;
-
-    @DocumentReference(lazy = true, collection = "books")
-    List<BookModel> bookShelf = new ArrayList<>();
-
-    @DocumentReference(lazy = true, collection = "guilds")
-    List<GuildModel> guilds = new ArrayList<>();
-
-    @DocumentReference(lazy = true, collection = "users")
-    List<AppUser> friend = new ArrayList<>();
-
-    Integer currentPoint = 0;
-
-    Integer highestPoint = 0;
-
-    Long creationDate;
-
-    public ProfileModel() {
+    public SignInResponse() {
     }
 
-    public ProfileModel(@NotNull AppUser appUser) {
-        this._id = appUser.get_id();
-        this.name = appUser.getUsername();
-
-        this.dob = ProfileDefaultConfig.DOB;
-        this.gender = ProfileDefaultConfig.GENDER;
-
-        this.creationDate = Utils.time.getCurrentTimestamp();
+    public String getToken() {
+        return token;
     }
 
-    public String get_id() {
-        return _id;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 
     public String getUrlImage() {
@@ -80,11 +83,11 @@ public class ProfileModel {
         this.name = name;
     }
 
-    public Gender getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 
@@ -144,4 +147,3 @@ public class ProfileModel {
         this.creationDate = creationDate;
     }
 }
-

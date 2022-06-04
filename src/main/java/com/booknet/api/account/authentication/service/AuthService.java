@@ -8,12 +8,14 @@ import com.booknet.api.account.authentication.model.VerifyingUser;
 import com.booknet.api.account.authentication.payload.request.LoginRequest;
 import com.booknet.api.account.authentication.payload.request.SignupRequest;
 import com.booknet.api.account.authentication.payload.request.SignupVerifyRequest;
-import com.booknet.api.account.authentication.payload.response.JwtResponse;
+import com.booknet.api.account.authentication.payload.response.SignInResponse;
 import com.booknet.api.account.authentication.repository.AppRoleRepository;
 import com.booknet.api.account.authentication.repository.AppUserRepository;
 import com.booknet.api.account.authentication.repository.VerifyingUserRepository;
 import com.booknet.api.account.authentication.security.jwt.JwtUtils;
 import com.booknet.api.account.authentication.security.services.AppUserDetails;
+import com.booknet.api.profile.repository.ProfileRepository;
+import com.booknet.api.profile.service.ProfileService;
 import com.booknet.constants.ErrCode;
 import com.booknet.system.mail.MailService;
 import com.booknet.system.mail.model.TextEmail;
@@ -49,6 +51,12 @@ public class AuthService {
     AppRoleRepository roleRepository;
 
     @Autowired
+    ProfileService profileService;
+
+    @Autowired
+    ProfileRepository profileRepository;
+
+    @Autowired
     VerifyingUserRepository verifyingUserRepository;
 
     @Autowired
@@ -57,7 +65,7 @@ public class AuthService {
     @Autowired
     JwtUtils jwtUtils;
 
-    public JwtResponse handleLogin(LoginRequest loginRequest) {
+    public SignInResponse handleLogin(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -80,13 +88,26 @@ public class AuthService {
                         .replace("@tokenInfo", Utils.json.stringify(jwt))
         );
 
-        return new JwtResponse(
-                jwt
-                , userDetails.getId()
-                , userDetails.getUsername()
-                , userDetails.getEmail()
-                , roles
-        );
+        var response = new SignInResponse();
+        response.setToken(jwt);
+        response.setId(userDetails.getId());
+        response.setUsername(userDetails.getUsername());
+        response.setEmail(userDetails.getEmail());
+        response.setRoles(roles);
+
+        profileRepository.findBy_id(userDetails.getId()).ifPresent(profileModel -> {
+            response.setUrlImage(profileModel.getUrlImage());
+            response.setName(profileModel.getName());
+//            response.setGender(profileModel.getGender().toNumber());
+            response.setDob(profileModel.getDob());
+            response.setBookShelf(profileModel.getBookShelf());
+            response.setGuilds(profileModel.getGuilds());
+            response.setFriend(profileModel.getFriend());
+            response.setCurrentPoint(profileModel.getCurrentPoint());
+            response.setHighestPoint(profileModel.getHighestPoint());
+            response.setCreationDate(profileModel.getCreationDate());
+        });
+        return response;
     }
 
     public long createNewUser(SignupRequest signUpRequest) {
@@ -155,12 +176,14 @@ public class AuthService {
             return ErrCode.VERIFY_TOKEN_MISMATCH;
         }
 
-        if (tokenExpired){
+        if (tokenExpired) {
             logger.error("Expired verification for user with email {}", email);
             return ErrCode.VERIFY_TOKEN_EXPIRED;
         }
 
         AppUser verifiedUser = new AppUser(verifyingUser);
+        var newProfile = profileService.getOrCreateProfile(verifiedUser);
+        verifiedUser.setProfile(newProfile);
         userRepository.save(verifiedUser);
         verifyingUserRepository.delete(verifyingUser);
 
@@ -169,7 +192,7 @@ public class AuthService {
     }
 
     private boolean _isUsernameTaken(String username) {
-       return userRepository.existsByUsername(username)
+        return userRepository.existsByUsername(username)
                 || verifyingUserRepository.existsByUsername(username);
     }
 
