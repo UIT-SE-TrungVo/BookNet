@@ -6,7 +6,6 @@ import com.booknet.api.feed.repository.PostNewsRepository;
 import com.booknet.api.feed.repository.ReviewNewsRepository;
 import com.booknet.api.feed.request.create.*;
 import com.booknet.api.feed.request.FeedNotifyRequest;
-import com.booknet.constants.ErrCode;
 import com.booknet.constants.EvId;
 import com.booknet.system.EventCenter;
 import com.booknet.utils.Utils;
@@ -35,7 +34,7 @@ public class FeedService {
     public PostNewsModel createPostNews(PostNewsCreateRequest reqData) {
         String userId = reqData.getUserId();
         String caption = reqData.getCaption();
-        String imageUrl = reqData.getImageUrl();
+        ArrayList<String> imageUrl = reqData.getImagesUrl();
 
         PostNewsModel news = new PostNewsModel(userId, caption, imageUrl);
 
@@ -49,8 +48,9 @@ public class FeedService {
         String userId = reqData.getUserId();
         String caption = reqData.getCaption();
         String guildId = reqData.getGuildId();
+        ArrayList<String> imagesUrl = reqData.getImagesUrl();
 
-        GuildNewsModel news = new GuildNewsModel(userId, guildId, caption);
+        GuildNewsModel news = new GuildNewsModel(userId, guildId, caption, imagesUrl);
 
         guildNewsRepository.insert(news);
 
