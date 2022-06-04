@@ -113,13 +113,14 @@ public class AuthService {
         Set<String> strRoles = signUpRequest.getRoles();
         var roles = this._getAppUserRoles(strRoles);
         verifyingUser.setRoles(roles);
-        verifyingUserRepository.save(verifyingUser);
 
         //generate verification code
         var tokenLength = AuthConfig.VERIFY_TOKEN_LENGTH;
         var tokenCharset = AuthConfig.VERIFY_TOKEN_LENGTH_CHAR_SET;
         String token = TokenGenerator.getRandomizedString(tokenLength, tokenCharset);
         verifyingUser.setToken(token);
+
+        verifyingUserRepository.save(verifyingUser);
 
         //send code to user email
         var subject = AuthConfig.MAIL_SUBJECT;
@@ -150,7 +151,7 @@ public class AuthService {
         var tokenExpired = expiryDate.before(new Date());
 
         if (!tokenMatched) {
-            logger.error("Mismatched token {} for user with email {}", verifyingToken, email);
+            logger.error("Mismatched token {} for user with email {} {}", verifyingToken, email, inDbToken);
             return ErrCode.VERIFY_TOKEN_MISMATCH;
         }
 

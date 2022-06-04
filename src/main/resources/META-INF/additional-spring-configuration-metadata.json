@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "bookNet.app.jwtExpirationMs",
+      "type": "java.lang.String",
+      "description": "Description for bookNet.app.jwtExpirationMs."
+    },
+    {
+      "name": "spring.social.facebook.appId",
+      "type": "java.lang.String",
+      "description": "Description for spring.social.facebook.appId."
+    }
+  ] }
