@@ -70,7 +70,7 @@ public class ProfileService {
         }
 
         var profile = this.getOrCreateProfile(user);
-        var listGuild = profile.getGuilds();
+        var listGuild = profile.getListGuild();
         for (var guild : listGuild) {
             if (Objects.equals(guild.get_id(), guildModel.get_id())) {
                 logger.error("user is in guild !");
@@ -78,7 +78,7 @@ public class ProfileService {
             }
         }
         listGuild.add(guildModel);
-        profile.setGuilds(listGuild);
+        profile.setListGuild(listGuild);
         profileRepository.save(profile);
     }
 
@@ -90,12 +90,12 @@ public class ProfileService {
         }
 
         var profile = this.getOrCreateProfile(user);
-        var listGuild = profile.getGuilds();
+        var listGuild = profile.getListGuild();
         var filtered = new ArrayList<GuildModel>();
         for (var guild : listGuild) {
             if (!Objects.equals(guild.get_id(), guildModel.get_id())) filtered.add(guild);
         }
-        profile.setGuilds(filtered);
+        profile.setListGuild(filtered);
         profileRepository.save(profile);
     }
 }

@@ -1,8 +1,8 @@
 package com.booknet.api.account.authentication.payload.response;
 
-import com.booknet.api.account.authentication.model.AppUser;
 import com.booknet.api.book.model.BookModel;
 import com.booknet.api.guild.model.GuildModel;
+import com.booknet.api.profile.model.ProfileModel;
 
 import java.util.Date;
 import java.util.List;
@@ -19,7 +19,7 @@ public class SignInResponse {
     private Date dob;
     private List<BookModel> bookShelf;
     private List<GuildModel> guilds ;
-    private List<AppUser> friend;
+    private List<ProfileModel> friend;
     private Integer currentPoint;
     private Integer highestPoint;
     private Long creationDate;
@@ -115,11 +115,11 @@ public class SignInResponse {
         this.guilds = guilds;
     }
 
-    public List<AppUser> getFriend() {
+    public List<ProfileModel> getFriend() {
         return friend;
     }
 
-    public void setFriend(List<AppUser> friend) {
+    public void setFriend(List<ProfileModel> friend) {
         this.friend = friend;
     }
 

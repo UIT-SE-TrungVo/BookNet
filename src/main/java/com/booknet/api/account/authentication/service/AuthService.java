@@ -101,8 +101,8 @@ public class AuthService {
 //            response.setGender(profileModel.getGender().toNumber());
             response.setDob(profileModel.getDob());
             response.setBookShelf(profileModel.getBookShelf());
-            response.setGuilds(profileModel.getGuilds());
-            response.setFriend(profileModel.getFriend());
+            response.setGuilds(profileModel.getListGuild());
+            response.setFriend(profileModel.getListFriend());
             response.setCurrentPoint(profileModel.getCurrentPoint());
             response.setHighestPoint(profileModel.getHighestPoint());
             response.setCreationDate(profileModel.getCreationDate());

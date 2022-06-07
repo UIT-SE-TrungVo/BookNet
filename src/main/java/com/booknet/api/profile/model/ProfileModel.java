@@ -35,7 +35,7 @@ public class ProfileModel {
     List<GuildModel> guilds = new ArrayList<>();
 
     @DocumentReference(lazy = true, collection = "users")
-    List<AppUser> friend = new ArrayList<>();
+    List<ProfileModel> friend = new ArrayList<>();
 
     Integer currentPoint = 0;
 
@@ -104,19 +104,19 @@ public class ProfileModel {
         this.bookShelf = bookShelf;
     }
 
-    public List<GuildModel> getGuilds() {
+    public List<GuildModel> getListGuild() {
         return guilds;
     }
 
-    public void setGuilds(List<GuildModel> guilds) {
+    public void setListGuild(List<GuildModel> guilds) {
         this.guilds = guilds;
     }
 
-    public List<AppUser> getFriend() {
+    public List<ProfileModel> getListFriend() {
         return friend;
     }
 
-    public void setFriend(List<AppUser> friend) {
+    public void setListFriend(List<ProfileModel> friend) {
         this.friend = friend;
     }
 
@@ -144,4 +144,3 @@ public class ProfileModel {
         this.creationDate = creationDate;
     }
 }
-
