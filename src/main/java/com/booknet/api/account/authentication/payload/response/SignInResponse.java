@@ -2,7 +2,9 @@ package com.booknet.api.account.authentication.payload.response;
 
 import com.booknet.api.book.model.BookModel;
 import com.booknet.api.guild.model.GuildModel;
+import com.booknet.api.guild.model.GuildSimplifiedModel;
 import com.booknet.api.profile.model.ProfileModel;
+import com.booknet.api.profile.model.ProfileSimplifiedModel;
 
 import java.util.Date;
 import java.util.List;
@@ -18,8 +20,8 @@ public class SignInResponse {
     private int gender;
     private Date dob;
     private List<BookModel> bookShelf;
-    private List<GuildModel> guilds ;
-    private List<ProfileModel> friend;
+    private List<GuildSimplifiedModel> guilds ;
+    private List<ProfileSimplifiedModel> friend;
     private Integer currentPoint;
     private Integer highestPoint;
     private Long creationDate;
@@ -107,19 +109,19 @@ public class SignInResponse {
         this.bookShelf = bookShelf;
     }
 
-    public List<GuildModel> getGuilds() {
+    public List<GuildSimplifiedModel> getGuilds() {
         return guilds;
     }
 
-    public void setGuilds(List<GuildModel> guilds) {
+    public void setGuilds(List<GuildSimplifiedModel> guilds) {
         this.guilds = guilds;
     }
 
-    public List<ProfileModel> getFriend() {
+    public List<ProfileSimplifiedModel> getFriend() {
         return friend;
     }
 
-    public void setFriend(List<ProfileModel> friend) {
+    public void setFriend(List<ProfileSimplifiedModel> friend) {
         this.friend = friend;
     }
 

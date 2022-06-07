@@ -14,6 +14,8 @@ import com.booknet.api.account.authentication.repository.AppUserRepository;
 import com.booknet.api.account.authentication.repository.VerifyingUserRepository;
 import com.booknet.api.account.authentication.security.jwt.JwtUtils;
 import com.booknet.api.account.authentication.security.services.AppUserDetails;
+import com.booknet.api.guild.model.GuildSimplifiedModel;
+import com.booknet.api.profile.model.ProfileSimplifiedModel;
 import com.booknet.api.profile.repository.ProfileRepository;
 import com.booknet.api.profile.service.ProfileService;
 import com.booknet.constants.ErrCode;
@@ -101,8 +103,15 @@ public class AuthService {
 //            response.setGender(profileModel.getGender().toNumber());
             response.setDob(profileModel.getDob());
             response.setBookShelf(profileModel.getBookShelf());
-            response.setGuilds(profileModel.getListGuild());
-            response.setFriend(profileModel.getListFriend());
+
+            var simplifiedGuild = profileModel.getListGuild().stream()
+                            .map(GuildSimplifiedModel::getSimplified).collect(Collectors.toList());
+            response.setGuilds(simplifiedGuild);
+
+            var simplifiedFriend = profileModel.getListFriend().stream()
+                            .map(ProfileSimplifiedModel::getSimplified).collect(Collectors.toList());
+            response.setFriend(simplifiedFriend);
+
             response.setCurrentPoint(profileModel.getCurrentPoint());
             response.setHighestPoint(profileModel.getHighestPoint());
             response.setCreationDate(profileModel.getCreationDate());
