@@ -4,7 +4,6 @@ import com.booknet.api.account.authentication.model.AppUser;
 import com.booknet.api.book.model.BookModel;
 import com.booknet.api.guild.model.GuildModel;
 import com.booknet.api.profile.config.ProfileDefaultConfig;
-import com.booknet.constants.Gender;
 import com.booknet.utils.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.Id;
@@ -24,7 +23,7 @@ public class ProfileModel {
 
     String name;
 
-    Gender gender;
+    Integer gender;
 
     Date dob;
 
@@ -35,7 +34,7 @@ public class ProfileModel {
     List<GuildModel> guilds = new ArrayList<>();
 
     @DocumentReference(lazy = true, collection = "users")
-    List<AppUser> friend = new ArrayList<>();
+    List<ProfileModel> friend = new ArrayList<>();
 
     Integer currentPoint = 0;
 
@@ -80,11 +79,11 @@ public class ProfileModel {
         this.name = name;
     }
 
-    public Gender getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 
@@ -104,19 +103,19 @@ public class ProfileModel {
         this.bookShelf = bookShelf;
     }
 
-    public List<GuildModel> getGuilds() {
+    public List<GuildModel> getListGuild() {
         return guilds;
     }
 
-    public void setGuilds(List<GuildModel> guilds) {
+    public void setListGuild(List<GuildModel> guilds) {
         this.guilds = guilds;
     }
 
-    public List<AppUser> getFriend() {
+    public List<ProfileModel> getListFriend() {
         return friend;
     }
 
-    public void setFriend(List<AppUser> friend) {
+    public void setListFriend(List<ProfileModel> friend) {
         this.friend = friend;
     }
 
@@ -144,4 +143,3 @@ public class ProfileModel {
         this.creationDate = creationDate;
     }
 }
-

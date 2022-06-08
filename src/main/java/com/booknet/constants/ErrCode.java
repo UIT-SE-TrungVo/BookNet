@@ -25,4 +25,9 @@ public class ErrCode {
     public static final long GUILD_NOT_FOUND = 50;
     public static final long GUILD_ALREADY_JOINED = 51;
     public static final long GUILD_NOT_A_MEMBER = 52;
+
+    //friend
+    public static final long FRIEND_NOT_FOUND = 60;
+    public static final long FRIEND_ALREADY_MATCHED = 60;
+    public static final long FRIEND_ALREADY_UNMATCHED = 60;
 }

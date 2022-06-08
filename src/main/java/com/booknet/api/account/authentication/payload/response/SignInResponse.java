@@ -1,8 +1,8 @@
 package com.booknet.api.account.authentication.payload.response;
 
-import com.booknet.api.account.authentication.model.AppUser;
 import com.booknet.api.book.model.BookModel;
-import com.booknet.api.guild.model.GuildModel;
+import com.booknet.api.guild.model.GuildSimplifiedModel;
+import com.booknet.api.profile.model.ProfileSimplifiedModel;
 
 import java.util.Date;
 import java.util.List;
@@ -15,11 +15,11 @@ public class SignInResponse {
     private List<String> roles;
     private String urlImage;
     private String name;
-    private int gender;
+    private Integer gender;
     private Date dob;
     private List<BookModel> bookShelf;
-    private List<GuildModel> guilds ;
-    private List<AppUser> friend;
+    private List<GuildSimplifiedModel> guilds ;
+    private List<ProfileSimplifiedModel> friend;
     private Integer currentPoint;
     private Integer highestPoint;
     private Long creationDate;
@@ -83,11 +83,11 @@ public class SignInResponse {
         this.name = name;
     }
 
-    public int getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 
@@ -107,19 +107,19 @@ public class SignInResponse {
         this.bookShelf = bookShelf;
     }
 
-    public List<GuildModel> getGuilds() {
+    public List<GuildSimplifiedModel> getGuilds() {
         return guilds;
     }
 
-    public void setGuilds(List<GuildModel> guilds) {
+    public void setGuilds(List<GuildSimplifiedModel> guilds) {
         this.guilds = guilds;
     }
 
-    public List<AppUser> getFriend() {
+    public List<ProfileSimplifiedModel> getFriend() {
         return friend;
     }
 
-    public void setFriend(List<AppUser> friend) {
+    public void setFriend(List<ProfileSimplifiedModel> friend) {
         this.friend = friend;
     }
 

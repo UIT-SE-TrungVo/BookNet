@@ -1,7 +1,5 @@
 package com.booknet.api.profile.payload;
 
-import com.booknet.constants.Gender;
-
 import java.util.Date;
 
 public class ProfileUpdateRequest {
@@ -9,7 +7,7 @@ public class ProfileUpdateRequest {
 
     String name;
 
-    Gender gender;
+    Integer gender;
 
     Date dob;
 
@@ -29,11 +27,11 @@ public class ProfileUpdateRequest {
         this.name = name;
     }
 
-    public Gender getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 
