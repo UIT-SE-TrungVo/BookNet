@@ -1,9 +1,7 @@
 package com.booknet.api.account.authentication.payload.response;
 
 import com.booknet.api.book.model.BookModel;
-import com.booknet.api.guild.model.GuildModel;
 import com.booknet.api.guild.model.GuildSimplifiedModel;
-import com.booknet.api.profile.model.ProfileModel;
 import com.booknet.api.profile.model.ProfileSimplifiedModel;
 
 import java.util.Date;
@@ -17,7 +15,7 @@ public class SignInResponse {
     private List<String> roles;
     private String urlImage;
     private String name;
-    private int gender;
+    private Integer gender;
     private Date dob;
     private List<BookModel> bookShelf;
     private List<GuildSimplifiedModel> guilds ;
@@ -85,11 +83,11 @@ public class SignInResponse {
         this.name = name;
     }
 
-    public int getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 

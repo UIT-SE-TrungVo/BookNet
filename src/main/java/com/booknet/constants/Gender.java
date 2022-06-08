@@ -1,17 +1,7 @@
 package com.booknet.constants;
 
-public enum Gender {
-    MALE(0),
-    FEMALE(1),
-    UNKNOWN(2);
-
-    private final int number;
-
-    Gender(int number) {
-        this.number = number;
-    }
-
-    public int toNumber() {
-        return number;
-    }
+public class Gender {
+    public static final Integer MALE = 0;
+    public static final Integer FEMALE = 1;
+    public static final Integer OTHERS = 2;
 }
