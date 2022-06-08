@@ -25,6 +25,9 @@ public class GuildModel {
     @Size(max = 20)
     String name;
 
+    @NotEmpty
+    String imageUrl;
+
     @NotNull
     @Size(max = 120)
     String description;
@@ -38,9 +41,10 @@ public class GuildModel {
     public GuildModel() {
     }
 
-    public GuildModel(String _id, String name) {
+    public GuildModel(String _id, String name, String imageUrl) {
         this._id = _id;
         this.name = name;
+        this.imageUrl = imageUrl;
     }
 
     public String get_id() {
@@ -81,6 +85,10 @@ public class GuildModel {
 
     public void setNews(List<GuildNewsModel> news) {
         this.news = news;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public boolean isContainUser(AppUser user) {

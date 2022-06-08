@@ -9,14 +9,18 @@ public class CommentCreateRequest {
     String postId;
 
     @NotNull
+    String userId;
+
+    @NotNull
     int postType;
 
     @NotEmpty
     String content;
 
-    public CommentCreateRequest(String postId, int postType, String content) {
+    public CommentCreateRequest(String postId, int postType, String content, String userId) {
         this.postId = postId;
         this.postType = postType;
+        this.userId = userId;
         this.content = content;
     }
 
@@ -42,5 +46,13 @@ public class CommentCreateRequest {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

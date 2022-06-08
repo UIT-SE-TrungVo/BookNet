@@ -1,5 +1,6 @@
 package com.booknet.api.feed.model;
 
+import com.booknet.api.profile.model.ProfileSimplifiedModel;
 import com.booknet.constants.IdPrefix;
 import com.booknet.utils.IdGenerator;
 import nonapi.io.github.classgraph.json.Id;
@@ -102,16 +103,16 @@ public class BaseNewsModel {
         return commentList;
     }
 
-    public CommentModel addCommentAndGet(String content) {
-        CommentModel comment = new CommentModel(content);
+    public CommentModel addCommentAndGet(String content, ProfileSimplifiedModel profileSimplified) {
+        CommentModel comment = new CommentModel(content, profileSimplified);
         commentList.add(comment);
         return comment;
     }
 
-    public ReplyCommentModel addReplyCommentAndGet(String commentId, String content) {
+    public ReplyCommentModel addReplyCommentAndGet(String commentId, String content, ProfileSimplifiedModel profileSimplified) {
         for (CommentModel comment: commentList) {
             if (comment.get_id().equals(commentId)) {
-                return comment.addReplyCommentAndGet(content);
+                return comment.addReplyCommentAndGet(content, profileSimplified);
             }
         }
         return null;

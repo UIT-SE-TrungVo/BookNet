@@ -4,11 +4,13 @@ public class ProfileSimplifiedModel {
     String _id;
     String urlImage;
     String name;
+    String alias;
 
-    public ProfileSimplifiedModel(String _id, String urlImage, String name) {
+    public ProfileSimplifiedModel(String _id, String urlImage, String name, String alias) {
         this._id = _id;
         this.urlImage = urlImage;
         this.name = name;
+        this.alias = alias;
     }
 
     public String get_id() {
@@ -28,6 +30,7 @@ public class ProfileSimplifiedModel {
                 profileModel.get_id()
                 , profileModel.getUrlImage()
                 , profileModel.getName()
+                , profileModel.getAlias()
         );
     }
 }

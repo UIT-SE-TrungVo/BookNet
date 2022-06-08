@@ -1,31 +1,39 @@
 package com.booknet.api.feed.response;
 
 import com.booknet.api.feed.model.CommentModel;
+import com.booknet.api.guild.model.GuildSimplifiedModel;
 import nonapi.io.github.classgraph.json.Id;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class NewsResponse {
     @Id
-    String _id;
+    private String _id;
 
     @NotNull
-    String userId;
+    private String userId;
 
     @NotNull
-    int type;
+    private int type;
 
     @NotEmpty
-    String caption;
+    private String caption;
 
     @NotEmpty
-    int numberOfLikes;
+    private int numberOfLikes;
 
-    long createdDate;
+    private LinkedList<CommentModel> commentList;
 
-    String guildId;
+    @NotNull
+    ArrayList<String> imagesUrl;
 
-    protected LinkedList<CommentModel> commentList;
+    @NotEmpty
+    String reviewId;
+
+    GuildSimplifiedModel guildSimplified;
+
+    protected long createdDate;
 }

@@ -1,5 +1,6 @@
 package com.booknet.api.feed.model;
 
+import com.booknet.api.profile.model.ProfileSimplifiedModel;
 import com.booknet.constants.IdPrefix;
 import com.booknet.utils.IdGenerator;
 
@@ -10,9 +11,20 @@ public class ReplyCommentModel {
 
     private String createdDate;
 
-    public ReplyCommentModel(String content) {
+    private ProfileSimplifiedModel profileSimplified;
+
+    public ReplyCommentModel(String content, ProfileSimplifiedModel profileSimplified) {
         this._id = IdGenerator.createNew(IdPrefix.REPLY_COMMENT);
         this.content = content;
+        this.profileSimplified = profileSimplified;
+    }
+
+    public ProfileSimplifiedModel getProfileSimplified() {
+        return profileSimplified;
+    }
+
+    public void setProfileSimplified(ProfileSimplifiedModel profileSimplified) {
+        this.profileSimplified = profileSimplified;
     }
 
     public String get_id() {

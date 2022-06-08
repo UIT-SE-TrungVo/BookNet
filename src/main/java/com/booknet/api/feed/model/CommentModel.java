@@ -1,14 +1,21 @@
 package com.booknet.api.feed.model;
 
+import com.booknet.api.account.authentication.model.AppUser;
+import com.booknet.api.profile.model.ProfileSimplifiedModel;
 import com.booknet.constants.IdPrefix;
 import com.booknet.utils.IdGenerator;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class CommentModel {
 
     private String _id;
+
+    private ProfileSimplifiedModel profileSimplified;
 
     private String content;
 
@@ -16,10 +23,11 @@ public class CommentModel {
 
     private long createdDate;
 
-    public CommentModel(String content) {
+    public CommentModel(String content, ProfileSimplifiedModel profileSimplified) {
         this._id = IdGenerator.createNew(IdPrefix.COMMENT);
         this.content = content;
         this.replyList = new LinkedList<>();
+        this.profileSimplified = profileSimplified;
         this.createdDate = Instant.now().toEpochMilli();
     }
 
@@ -55,8 +63,8 @@ public class CommentModel {
         this.replyList = replyList;
     }
 
-    public ReplyCommentModel addReplyCommentAndGet(String content) {
-        ReplyCommentModel replyComment = new ReplyCommentModel(content);
+    public ReplyCommentModel addReplyCommentAndGet(String content, ProfileSimplifiedModel profileSimplified) {
+        ReplyCommentModel replyComment = new ReplyCommentModel(content, profileSimplified);
         replyList.add(replyComment);
         return replyComment;
     }

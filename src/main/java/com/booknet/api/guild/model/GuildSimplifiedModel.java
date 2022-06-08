@@ -17,11 +17,13 @@ public class GuildSimplifiedModel {
     String _id;
     String name;
     String description;
+    String imageUrl;
 
-    public GuildSimplifiedModel(String _id, String name, String description) {
+    public GuildSimplifiedModel(String _id, String name, String description, String imageUrl) {
         this._id = _id;
         this.name = name;
         this.description = description;
+        this.imageUrl = imageUrl;
     }
 
     public String get_id() {
@@ -36,11 +38,16 @@ public class GuildSimplifiedModel {
         return description;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
     public static GuildSimplifiedModel getSimplified(GuildModel guildModel) {
         return new GuildSimplifiedModel(
                 guildModel.get_id()
                 , guildModel.getName()
                 , guildModel.getDescription()
+                , guildModel.getImageUrl()
         );
     }
 }

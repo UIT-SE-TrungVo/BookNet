@@ -30,7 +30,7 @@ public class ProfileService {
 
     public ProfileModel getOrCreateProfile(@NotNull AppUser appUser) {
         var profile = profileRepository.findBy_id(appUser.get_id())
-                .orElse(new ProfileModel(appUser));
+                .orElse(new ProfileModel(appUser, ""));
         profileRepository.save(profile);
         return profile;
     }

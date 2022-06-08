@@ -8,8 +8,8 @@ public class ReplyCommentCreateRequest extends CommentCreateRequest{
     @NotEmpty
     String commentId;
 
-    public ReplyCommentCreateRequest(String postId, int postType, String content, String commentId) {
-        super(postId, postType, content);
+    public ReplyCommentCreateRequest(String postId, int postType, String content, String commentId, String userId) {
+        super(postId, postType, content, userId);
         this.commentId = commentId;
     }
 

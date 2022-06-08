@@ -7,9 +7,19 @@ public class ProfileUpdateRequest {
 
     String name;
 
+    String alias;
+
     Integer gender;
 
     Date dob;
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
 
     public String getUrlImage() {
         return urlImage;

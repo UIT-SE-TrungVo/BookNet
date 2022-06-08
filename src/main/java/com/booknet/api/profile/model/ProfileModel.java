@@ -23,6 +23,8 @@ public class ProfileModel {
 
     String name;
 
+    String alias;
+
     Integer gender;
 
     Date dob;
@@ -45,9 +47,10 @@ public class ProfileModel {
     public ProfileModel() {
     }
 
-    public ProfileModel(@NotNull AppUser appUser) {
+    public ProfileModel(@NotNull AppUser appUser, String alias) {
         this._id = appUser.get_id();
         this.name = appUser.getUsername();
+        this.alias = alias;
 
         this.dob = ProfileDefaultConfig.DOB;
         this.gender = ProfileDefaultConfig.GENDER;
@@ -141,5 +144,13 @@ public class ProfileModel {
 
     public void setCreationDate(Long creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 }
