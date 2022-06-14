@@ -12,35 +12,27 @@ public class ReactionCreateRequest {
     String postId;
 
     @NotNull
-    boolean isLike;
+    int postType;
 
-    public ReactionCreateRequest(String userId, String postId, boolean isLike) {
+    public ReactionCreateRequest(String userId, String postId, int postType) {
         this.userId = userId;
         this.postId = postId;
-        this.isLike = isLike;
+        this.postType = postType;
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getPostId() {
         return postId;
     }
 
-    public void setPostId(String postId) {
-        this.postId = postId;
+    public int getPostType() {
+        return postType;
     }
 
-    public boolean isLike() {
-        return isLike;
-    }
-
-    public void setLike(boolean like) {
-        isLike = like;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

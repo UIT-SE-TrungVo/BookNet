@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Document(collection = "books")
 public class BookModel {
     @Id
-    String _id;
+    String id;
 
     @NotNull
     Integer number;
@@ -20,18 +20,18 @@ public class BookModel {
     public BookModel() {
     }
 
-    public BookModel(String _id, Integer number, String text) {
-        this._id = _id;
+    public BookModel(String id, Integer number, String text) {
+        this.id = id;
         this.number = number;
         this.text = text;
     }
 
-    public String get_id() {
-        return _id;
+    public String getId() {
+        return id;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Integer getNumber() {

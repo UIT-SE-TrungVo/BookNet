@@ -6,38 +6,38 @@ import javax.validation.constraints.NotNull;
 public class CommentCreateRequest {
 
     @NotNull
-    String postId;
+    String newsId;
 
     @NotNull
     String userId;
 
     @NotNull
-    int postType;
+    int newsType;
 
     @NotEmpty
     String content;
 
-    public CommentCreateRequest(String postId, int postType, String content, String userId) {
-        this.postId = postId;
-        this.postType = postType;
+    public CommentCreateRequest(String newsId, int newsType, String content, String userId) {
+        this.newsId = newsId;
+        this.newsType = newsType;
         this.userId = userId;
         this.content = content;
     }
 
-    public String getPostId() {
-        return postId;
+    public String getNewsId() {
+        return newsId;
     }
 
-    public void setPostId(String postId) {
-        this.postId = postId;
+    public void setNewsId(String newsId) {
+        this.newsId = newsId;
     }
 
-    public int getPostType() {
-        return postType;
+    public int getNewsType() {
+        return newsType;
     }
 
-    public void setPostType(int postType) {
-        this.postType = postType;
+    public void setNewsType(int newsType) {
+        this.newsType = newsType;
     }
 
     public String getContent() {

@@ -16,7 +16,7 @@ public class BookNetApplication {
 
     public static void main(String[] args) {
 //        initEncryptor();
-        initNetwork();
+//        initNetwork();
         SpringApplication.run(BookNetApplication.class, args);
     }
 

@@ -31,7 +31,7 @@ public class FeedController {
     // endregion
 
     // region post
-    @PostMapping("/post-news")
+    @PostMapping("/post_news")
     public ResponseEntity<?> createPostNews(@Valid @RequestBody PostNewsCreateRequest req) {
         PostNewsModel postNewsModel = feedService.createPostNews(req);
         return ResponseEntity.ok(
@@ -39,7 +39,7 @@ public class FeedController {
         );
     }
 
-    @PostMapping("/guild-news")
+    @PostMapping("/guild_news")
     public ResponseEntity<?> createGuildNews(@Valid @RequestBody GuildNewsCreateRequest req) {
         GuildNewsModel postNewsModel = feedService.createGuildNews(req);
         return ResponseEntity.ok(
@@ -47,7 +47,7 @@ public class FeedController {
         );
     }
 
-    @PostMapping("/review-news")
+    @PostMapping("/review_news")
     public ResponseEntity<?> createReviewNews(@Valid @RequestBody ReviewNewsCreateRequest req) {
         ReviewNewsModel postNewsModel = feedService.createReviewNews(req);
         return ResponseEntity.ok(

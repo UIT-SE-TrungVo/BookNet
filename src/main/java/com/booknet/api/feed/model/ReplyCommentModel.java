@@ -5,7 +5,7 @@ import com.booknet.constants.IdPrefix;
 import com.booknet.utils.IdGenerator;
 
 public class ReplyCommentModel {
-    private String _id;
+    private String id;
 
     private String content;
 
@@ -14,7 +14,7 @@ public class ReplyCommentModel {
     private ProfileSimplifiedModel profileSimplified;
 
     public ReplyCommentModel(String content, ProfileSimplifiedModel profileSimplified) {
-        this._id = IdGenerator.createNew(IdPrefix.REPLY_COMMENT);
+        this.id = IdGenerator.createNew(IdPrefix.REPLY_COMMENT);
         this.content = content;
         this.profileSimplified = profileSimplified;
     }
@@ -27,12 +27,12 @@ public class ReplyCommentModel {
         this.profileSimplified = profileSimplified;
     }
 
-    public String get_id() {
-        return _id;
+    public String getId() {
+        return id;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getCreatedDate() {

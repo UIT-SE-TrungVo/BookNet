@@ -2,38 +2,83 @@ package com.booknet.api.feed.response;
 
 import com.booknet.api.feed.model.CommentModel;
 import com.booknet.api.guild.model.GuildSimplifiedModel;
-import nonapi.io.github.classgraph.json.Id;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class NewsResponse {
-    @Id
-    private String _id;
+    private String id;
 
-    @NotNull
     private String userId;
 
-    @NotNull
     private int type;
 
-    @NotEmpty
     private String caption;
 
-    @NotEmpty
     private int numberOfLikes;
 
     private LinkedList<CommentModel> commentList;
 
-    @NotNull
+    protected long createdDate;
+
+    //region post
     ArrayList<String> imagesUrl;
 
-    @NotEmpty
+    //region review
     String reviewId;
 
+    //region guild
     GuildSimplifiedModel guildSimplified;
 
-    protected long createdDate;
+    public NewsResponse(String _id, String userId, int type, String caption, int numberOfLikes, LinkedList<CommentModel> commentList, long createdDate, ArrayList<String> imagesUrl, String reviewId, GuildSimplifiedModel guildSimplified) {
+        this.id = _id;
+        this.userId = userId;
+        this.type = type;
+        this.caption = caption;
+        this.numberOfLikes = numberOfLikes;
+        this.commentList = commentList;
+        this.createdDate = createdDate;
+        this.imagesUrl = imagesUrl;
+        this.reviewId = reviewId;
+        this.guildSimplified = guildSimplified;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public String getCaption() {
+        return caption;
+    }
+
+    public int getNumberOfLikes() {
+        return numberOfLikes;
+    }
+
+    public LinkedList<CommentModel> getCommentList() {
+        return commentList;
+    }
+
+    public long getCreatedDate() {
+        return createdDate;
+    }
+
+    public ArrayList<String> getImagesUrl() {
+        return imagesUrl;
+    }
+
+    public String getReviewId() {
+        return reviewId;
+    }
+
+    public GuildSimplifiedModel getGuildSimplified() {
+        return guildSimplified;
+    }
 }

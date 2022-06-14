@@ -1,12 +1,12 @@
 package com.booknet.api.feed.service;
 
-import com.booknet.api.account.authentication.repository.AppUserRepository;
 import com.booknet.api.feed.model.*;
 import com.booknet.api.feed.repository.GuildNewsRepository;
 import com.booknet.api.feed.repository.PostNewsRepository;
 import com.booknet.api.feed.repository.ReviewNewsRepository;
 import com.booknet.api.feed.request.create.*;
 import com.booknet.api.feed.request.FeedNotifyRequest;
+import com.booknet.api.feed.response.ReactNewsResponse;
 import com.booknet.api.profile.model.ProfileSimplifiedModel;
 import com.booknet.api.profile.repository.ProfileRepository;
 import com.booknet.constants.EvId;
@@ -78,8 +78,8 @@ public class FeedService {
     }
 
     public CommentModel createComment(CommentCreateRequest reqData){
-        String postId = reqData.getPostId();
-        int postType = reqData.getPostType();
+        String newsId = reqData.getNewsId();
+        int newsType = reqData.getNewsType();
         String content = reqData.getContent();
         String userId = reqData.getUserId();
 
@@ -87,64 +87,76 @@ public class FeedService {
 
         CommentModel commentModel = null;
 
-        switch (NewsType.fromCode(postType)) {
-            case POST:
-                PostNewsModel postNewsModel = postNewsRepository.findBy_id(postId).orElse(null);
-                if (postNewsModel == null) return null;
-                commentModel = postNewsModel.addCommentAndGet(content, profileSimplified);
-                postNewsRepository.save(postNewsModel);
-                break;
-            case GUILD:
-                GuildNewsModel guildNewsModel = guildNewsRepository.findBy_id(postId).orElse(null);
-                if (guildNewsModel == null) return null;
-                commentModel = guildNewsModel.addCommentAndGet(content, profileSimplified);
-                guildNewsRepository.save(guildNewsModel);
-                break;
-            case REVIEW:
-                ReviewNewsModel reviewNewsModel = reviewNewsRepository.findBy_id(postId).orElse(null);
-                if (reviewNewsModel == null) return null;
-                commentModel = reviewNewsModel.addCommentAndGet(content, profileSimplified);
-                reviewNewsRepository.save(reviewNewsModel);
-                break;
-        }
+        BaseNewsModel newsModel = getNewsFromDatabase(newsId, newsType);
+        commentModel = newsModel.addCommentAndGet(content, profileSimplified);
+        saveNewsToDatabase(newsModel, newsType);
 
         return commentModel;
     }
 
     public ReplyCommentModel createReplyComment(ReplyCommentCreateRequest reqData){
-        String postId = reqData.getPostId();
+        String newsId = reqData.getNewsId();
         String commentId = reqData.getCommentId();
-        int postType = reqData.getPostType();
+        int newsType = reqData.getNewsType();
         String content = reqData.getContent();
         String userId = reqData.getUserId();
 
         ReplyCommentModel replyCommentModel = null;
-
         ProfileSimplifiedModel profileSimplified = ProfileSimplifiedModel.getSimplified(profileRepository.findBy_id(userId).get());
 
-        switch (NewsType.fromCode(postType)) {
-            case POST:
-                PostNewsModel postNewsModel = postNewsRepository.findBy_id(postId).orElse(null);
-                if (postNewsModel == null) return null;
-                replyCommentModel = postNewsModel.addReplyCommentAndGet(commentId, content, profileSimplified);
-                postNewsRepository.save(postNewsModel);
-                break;
-            case GUILD:
-                GuildNewsModel guildNewsModel = guildNewsRepository.findBy_id(postId).orElse(null);
-                if (guildNewsModel == null) return null;
-                replyCommentModel = guildNewsModel.addReplyCommentAndGet(commentId, content, profileSimplified);
-                guildNewsRepository.save(guildNewsModel);
-                break;
-            case REVIEW:
-                ReviewNewsModel reviewNewsModel = reviewNewsRepository.findBy_id(postId).orElse(null);
-                if (reviewNewsModel == null) return null;
-                replyCommentModel = reviewNewsModel.addReplyCommentAndGet(commentId, content, profileSimplified);
-                reviewNewsRepository.save(reviewNewsModel);
-                break;
-        }
+        BaseNewsModel newsModel = getNewsFromDatabase(newsId, newsType);
+        replyCommentModel = newsModel.addReplyCommentAndGet(commentId, content, profileSimplified);
+
+        saveNewsToDatabase(newsModel, newsType);
 
         return replyCommentModel;
     }
+
+    public ReactNewsResponse reactWithPost(ReactionCreateRequest reqData) {
+        String userId = reqData.getUserId();
+        String postId = reqData.getPostId();
+        int postType = reqData.getPostType();
+
+        ReactNewsResponse response = null;
+
+
+
+        return response;
+    }
+
+    public BaseNewsModel getNewsFromDatabase(String newsId, int newsType) {
+        BaseNewsModel model = null;
+
+        switch (NewsType.fromCode(newsType)) {
+            case POST:
+                model = postNewsRepository.findBy_id(newsId).orElse(null);
+                break;
+            case GUILD:
+                model = guildNewsRepository.findBy_id(newsId).orElse(null);
+                break;
+            case REVIEW:
+                model = reviewNewsRepository.findBy_id(newsId).orElse(null);
+                break;
+        }
+
+        return model;
+    }
+
+    public void saveNewsToDatabase(BaseNewsModel newsModel, int newsType) {
+        switch (NewsType.fromCode(newsType)) {
+            case POST:
+                postNewsRepository.save((PostNewsModel) newsModel);
+                break;
+            case GUILD:
+                guildNewsRepository.save((GuildNewsModel) newsModel);
+                break;
+            case REVIEW:
+                reviewNewsRepository.save((ReviewNewsModel) newsModel);
+                break;
+        }
+    }
+
+
 
     public Collection<BaseNewsModel> getUserFeed(String userId) {
 //        ArrayList newsCollection = (ArrayList) postNewsRepository.findBaseNewsByUserId(userId);
@@ -172,13 +184,6 @@ public class FeedService {
         logger.info("get all post for user {}", Utils.json.stringify(results));
         return results;
     }
-
-    public BaseNewsModel getSample(String id) {
-        BaseNewsModel sample = postNewsRepository.findBy_id(id).orElse(null);
-        logger.info("get SampleModel with id {} {}", id, Utils.json.stringify(sample));
-        return sample;
-    }
-
 
     public void doNotify() {
         EventCenter.pub(EvId.SAMPLE_EVENT);

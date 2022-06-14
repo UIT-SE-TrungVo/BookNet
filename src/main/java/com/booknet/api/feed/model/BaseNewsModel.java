@@ -23,12 +23,11 @@ public class BaseNewsModel {
     @NotEmpty
     protected String caption;
 
-    @NotEmpty
-    protected int numberOfLikes;
-
     protected long createdDate;
 
     protected LinkedList<CommentModel> commentList;
+
+    protected LinkedList<String> likeUserIdList;
 
     private BaseNewsModel() {
     }
@@ -38,7 +37,7 @@ public class BaseNewsModel {
         this.userId = userId;
         this.type = type;
         this.caption = caption;
-        this.numberOfLikes = 0;
+        this.likeUserIdList = new LinkedList<>();
         this.commentList = new LinkedList<>();
         this.createdDate = Instant.now().toEpochMilli();
     }
@@ -75,28 +74,8 @@ public class BaseNewsModel {
         this.caption = caption;
     }
 
-    public long getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(long createdDate) {
-        this.createdDate = createdDate;
-    }
-
     public int getNumberOfLikes() {
-        return numberOfLikes;
-    }
-
-    public void setNumberOfLikes(int numberOfLikes) {
-        this.numberOfLikes = numberOfLikes;
-    }
-
-    public void increaseNumberOfLikes() {
-        numberOfLikes += 1;
-    }
-
-    public void decreaseNumberOfLikes() {
-        numberOfLikes -= 1;
+        return likeUserIdList.size();
     }
 
     public LinkedList<CommentModel> getCommentList() {

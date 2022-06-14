@@ -44,7 +44,7 @@ public class BookService {
     }
 
     public BookModel getSample(String id) {
-        BookModel book = bookRepository.findBy_id(id).orElse(null);
+        BookModel book = bookRepository.findById(id).orElse(null);
         logger.info("get BookModel with id {} {}", id, Utils.json.stringify(book));
         return book;
     }
