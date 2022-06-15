@@ -6,7 +6,6 @@ import com.booknet.api.feed.repository.PostNewsRepository;
 import com.booknet.api.feed.repository.ReviewNewsRepository;
 import com.booknet.api.feed.request.create.*;
 import com.booknet.api.feed.request.FeedNotifyRequest;
-import com.booknet.api.feed.response.ReactNewsResponse;
 import com.booknet.api.profile.model.ProfileSimplifiedModel;
 import com.booknet.api.profile.repository.ProfileRepository;
 import com.booknet.constants.EvId;
@@ -20,6 +19,8 @@ import org.springframework.stereotype.Service;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 public class FeedService {
@@ -89,7 +90,7 @@ public class FeedService {
 
         BaseNewsModel newsModel = getNewsFromDatabase(newsId, newsType);
         commentModel = newsModel.addCommentAndGet(content, profileSimplified);
-        saveNewsToDatabase(newsModel, newsType);
+        saveNewsToDatabase(newsModel);
 
         return commentModel;
     }
@@ -107,21 +108,27 @@ public class FeedService {
         BaseNewsModel newsModel = getNewsFromDatabase(newsId, newsType);
         replyCommentModel = newsModel.addReplyCommentAndGet(commentId, content, profileSimplified);
 
-        saveNewsToDatabase(newsModel, newsType);
+        saveNewsToDatabase(newsModel);
 
         return replyCommentModel;
     }
 
-    public ReactNewsResponse reactWithPost(ReactionCreateRequest reqData) {
+    public List<String> reactWithPost(ReactionCreateRequest reqData) {
         String userId = reqData.getUserId();
-        String postId = reqData.getPostId();
-        int postType = reqData.getPostType();
+        String newsId = reqData.getNewsId();
+        int newsType = reqData.getNewsType();
 
-        ReactNewsResponse response = null;
+        BaseNewsModel newsModel = getNewsFromDatabase(newsId, newsType);
 
+        if (newsModel.containUserInLikeList(userId)) {
+            newsModel.removeUserFromLikeList(userId);
+        } else  {
+            newsModel.addUserToLikeList(userId);
+        }
 
+        saveNewsToDatabase(newsModel);
 
-        return response;
+        return newsModel.getLikeUserIdList();
     }
 
     public BaseNewsModel getNewsFromDatabase(String newsId, int newsType) {
@@ -142,8 +149,8 @@ public class FeedService {
         return model;
     }
 
-    public void saveNewsToDatabase(BaseNewsModel newsModel, int newsType) {
-        switch (NewsType.fromCode(newsType)) {
+    public void saveNewsToDatabase(BaseNewsModel newsModel) {
+        switch (NewsType.fromCode(newsModel.getType())) {
             case POST:
                 postNewsRepository.save((PostNewsModel) newsModel);
                 break;

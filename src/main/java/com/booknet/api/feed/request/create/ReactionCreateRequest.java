@@ -9,27 +9,27 @@ public class ReactionCreateRequest {
     String userId;
 
     @NotEmpty
-    String postId;
+    String newsId;
 
     @NotNull
-    int postType;
+    int newsType;
 
-    public ReactionCreateRequest(String userId, String postId, int postType) {
+    public ReactionCreateRequest(String userId, String newsId, int newsType) {
         this.userId = userId;
-        this.postId = postId;
-        this.postType = postType;
+        this.newsId = newsId;
+        this.newsType = newsType;
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public String getPostId() {
-        return postId;
+    public String getNewsId() {
+        return newsId;
     }
 
-    public int getPostType() {
-        return postType;
+    public int getNewsType() {
+        return newsType;
     }
 
     public void setUserId(String userId) {
