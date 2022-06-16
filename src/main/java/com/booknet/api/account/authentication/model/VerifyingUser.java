@@ -15,8 +15,8 @@ public class VerifyingUser extends AppUser {
 
     private Date expiryDate;
 
-    public VerifyingUser(String username, String email, String password) {
-        super(username, email, password);
+    public VerifyingUser(String username, String email, String password, String name) {
+        super(username, email, password, name);
 
         var expiration = AuthConfig.VERIFY_TOKEN_EXPIRATION_IN_SECONDS;
         var expiryDate = Utils.time.getExpiryDateFromNow(expiration);

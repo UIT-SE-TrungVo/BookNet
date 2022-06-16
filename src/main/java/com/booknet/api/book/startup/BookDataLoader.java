@@ -21,17 +21,6 @@ public class BookDataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
-        this.bookRepository.deleteAll();
 
-        final int NUM_GENERATED_MODEL = 10;
-        for (int i = 0; i < NUM_GENERATED_MODEL; i++) {
-            Integer number = Utils.math.randomInt(0, 10);
-            String text = "abcdef";
-
-            BookCreateRequest req = new BookCreateRequest();
-            req.setNumber(number);
-            req.setText(text);
-            this.postService.createBook(req);
-        }
     }
 }

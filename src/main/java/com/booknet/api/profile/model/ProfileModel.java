@@ -54,7 +54,7 @@ public class ProfileModel {
     public ProfileModel(@NotNull AppUser appUser) {
         this._id = appUser.get_id();
         this.username = appUser.getUsername();
-        this.name = "";
+        this.name = appUser.getName();
 
         this.dob = ProfileDefaultConfig.DOB;
         this.gender = ProfileDefaultConfig.GENDER;
@@ -133,6 +133,22 @@ public class ProfileModel {
         return followersSimplifiedList;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<GuildModel> getGuilds() {
+        return guilds;
+    }
+
+    public void setGuilds(List<GuildModel> guilds) {
+        this.guilds = guilds;
+    }
+
     public List<ProfileModel> getFollowers() {
         return followers;
     }
@@ -175,13 +191,5 @@ public class ProfileModel {
 
     public void setCreationDate(Long creationDate) {
         this.creationDate = creationDate;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

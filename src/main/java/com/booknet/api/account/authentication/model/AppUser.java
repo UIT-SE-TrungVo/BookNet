@@ -23,6 +23,10 @@ public class AppUser {
     protected String username;
 
     @NotBlank
+    @Size(max = 20)
+    protected String name;
+
+    @NotBlank
     @Size(max = 50)
     @Email
     protected String email;
@@ -40,11 +44,12 @@ public class AppUser {
         this._id = IdGenerator.createNew(IdPrefix.USER);
     }
 
-    public AppUser(String username, String email, String password) {
+    public AppUser(String username, String email, String password, String name) {
         this._id = IdGenerator.createNew(IdPrefix.USER);
         this.username = username;
         this.email = email;
         this.password = password;
+        this.name = name;
     }
 
     public AppUser(VerifyingUser verifyingUser) {
@@ -52,6 +57,7 @@ public class AppUser {
         this.username = verifyingUser.getUsername();
         this.email = verifyingUser.getEmail();
         this.password = verifyingUser.getPassword();
+        this.name = verifyingUser.getName();
     }
 
     public String get_id() {
@@ -100,5 +106,13 @@ public class AppUser {
 
     public void setProfile(ProfileModel profile) {
         this.profile = profile;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

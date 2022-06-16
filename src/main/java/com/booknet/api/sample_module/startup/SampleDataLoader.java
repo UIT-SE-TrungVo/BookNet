@@ -24,17 +24,17 @@ public class SampleDataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
-        this.sampleRepository.deleteAll();
-
-        final int NUM_GENERATED_MODEL = 10;
-        for (int i = 0; i < NUM_GENERATED_MODEL; i++) {
-            Integer number = Utils.math.randomInt(0, 10);
-            String text = "abcdef";
-
-            SampleCreateRequest req = new SampleCreateRequest();
-            req.setNumber(number);
-            req.setText(text);
-            this.sampleService.createSample(req);
-        }
+//        this.sampleRepository.deleteAll();
+//
+//        final int NUM_GENERATED_MODEL = 10;
+//        for (int i = 0; i < NUM_GENERATED_MODEL; i++) {
+//            Integer number = Utils.math.randomInt(0, 10);
+//            String text = "abcdef";
+//
+//            SampleCreateRequest req = new SampleCreateRequest();
+//            req.setNumber(number);
+//            req.setText(text);
+//            this.sampleService.createSample(req);
+//        }
     }
 }

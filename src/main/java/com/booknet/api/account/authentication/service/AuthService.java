@@ -123,6 +123,7 @@ public class AuthService {
     public long createNewUser(SignupRequest signUpRequest) {
         var username = signUpRequest.getUsername();
         var email = signUpRequest.getEmail();
+        var name = signUpRequest.getName();
 
         if (this._isUsernameTaken(username)) {
             logger.error("User cannot be created {}: taken username", username);
@@ -136,9 +137,10 @@ public class AuthService {
 
         // Create new user's account
         VerifyingUser verifyingUser = new VerifyingUser(
-                signUpRequest.getUsername()
-                , signUpRequest.getEmail()
+                username
+                , email
                 , encoder.encode(signUpRequest.getPassword())
+                , name
         );
 
         Set<String> strRoles = signUpRequest.getRoles();
