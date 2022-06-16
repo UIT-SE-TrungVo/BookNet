@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface PostNewsRepository extends MongoRepository<PostNewsModel, String> {
     Optional<PostNewsModel> findBy_id(String id);
 
-    List<?> findPostNewsBy_id(String userId);
+    List<PostNewsModel> findPostNewsModelByUserId(String userId);
 
 }

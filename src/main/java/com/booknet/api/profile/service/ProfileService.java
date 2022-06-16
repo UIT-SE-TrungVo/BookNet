@@ -4,6 +4,8 @@ import com.booknet.api.account.authentication.model.AppUser;
 import com.booknet.api.account.authentication.repository.AppUserRepository;
 import com.booknet.api.guild.model.GuildModel;
 import com.booknet.api.profile.model.ProfileModel;
+import com.booknet.api.profile.model.ProfileSimplifiedModel;
+import com.booknet.api.profile.payload.ProfileResponse;
 import com.booknet.api.profile.payload.ProfileUpdateRequest;
 import com.booknet.api.profile.repository.ProfileRepository;
 import com.booknet.base.payload.BaseResponse;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Objects;
 
 @Service
@@ -30,7 +33,7 @@ public class ProfileService {
 
     public ProfileModel getOrCreateProfile(@NotNull AppUser appUser) {
         var profile = profileRepository.findBy_id(appUser.get_id())
-                .orElse(new ProfileModel(appUser, ""));
+                .orElse(new ProfileModel(appUser));
         profileRepository.save(profile);
         return profile;
     }
@@ -42,7 +45,9 @@ public class ProfileService {
             return BaseResponse.error(ErrCode.USER_NOT_FOUND);
         } else {
             var profile = profileRepository.findBy_id(userId).orElse(null);
-            return BaseResponse.ok(profile);
+
+            var profileResponse = new ProfileResponse(profile.get_id(), profile.getUrlImage(), profile.getUsername(), profile.getName(), profile.getGender(), profile.getDob(), profile.getFollowingSimplified(), profile.getFollowersSimplified(), profile.getCurrentPoint(), profile.getHighestPoint(), profile.getCreationDate());
+            return BaseResponse.ok(profileResponse);
         }
     }
 

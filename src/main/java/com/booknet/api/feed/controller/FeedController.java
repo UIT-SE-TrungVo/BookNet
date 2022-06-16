@@ -91,39 +91,4 @@ public class FeedController {
                 new BaseResponse(newModel)
         );
     }
-
-//    @PutMapping("/{id}")
-//    public ResponseEntity<?> updateSample(
-//            @PathVariable("id") String id,
-//            @Valid @RequestBody FeedUpdateRequest req
-//    ) {
-//        BaseNews editedModel = feedService.updateSample(id, req);
-//        return ResponseEntity.ok(
-//                new BaseResponse(editedModel)
-//        );
-//    }
-
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> removeSample(@PathVariable("id") String id) {
-//        BaseNews deleteSample = feedService.removeSample(id);
-//        return ResponseEntity.ok(
-//                new BaseResponse(deleteSample)
-//        );
-//    }
-
-    @PostMapping("/notify")
-    public ResponseEntity<?> doNotify() {
-        feedService.doNotify();
-        return ResponseEntity.ok(
-                new BaseResponse(null)
-        );
-    }
-
-    @PostMapping("/notify-with-args")
-    public ResponseEntity<?> doNotifyWithArgument(@Valid @RequestBody FeedNotifyRequest req) {
-        feedService.doNotifyWithArgument(req);
-        return ResponseEntity.ok(
-                new BaseResponse(null)
-        );
-    }
 }

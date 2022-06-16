@@ -98,6 +98,10 @@ public class BaseNewsModel {
         likeUserIdList.remove(userId);
     }
 
+    public long getCreatedDate() {
+        return createdDate;
+    }
+
     public CommentModel addCommentAndGet(String content, ProfileSimplifiedModel profileSimplified) {
         CommentModel comment = new CommentModel(content, profileSimplified);
         commentList.add(comment);

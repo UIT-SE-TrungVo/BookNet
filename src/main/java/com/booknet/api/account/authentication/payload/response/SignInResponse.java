@@ -19,7 +19,8 @@ public class SignInResponse {
     private Date dob;
     private List<BookModel> bookShelf;
     private List<GuildSimplifiedModel> guilds ;
-    private List<ProfileSimplifiedModel> friend;
+    private List<ProfileSimplifiedModel> following;
+    private List<ProfileSimplifiedModel> followers;
     private Integer currentPoint;
     private Integer highestPoint;
     private Long creationDate;
@@ -115,12 +116,20 @@ public class SignInResponse {
         this.guilds = guilds;
     }
 
-    public List<ProfileSimplifiedModel> getFriend() {
-        return friend;
+    public List<ProfileSimplifiedModel> getFollowing() {
+        return following;
     }
 
-    public void setFriend(List<ProfileSimplifiedModel> friend) {
-        this.friend = friend;
+    public void setFollowing(List<ProfileSimplifiedModel> following) {
+        this.following = following;
+    }
+
+    public List<ProfileSimplifiedModel> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<ProfileSimplifiedModel> followers) {
+        this.followers = followers;
     }
 
     public Integer getCurrentPoint() {

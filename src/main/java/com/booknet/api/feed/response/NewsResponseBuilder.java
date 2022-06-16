@@ -1,5 +1,6 @@
 package com.booknet.api.feed.response;
 
+import com.booknet.api.feed.model.BaseNewsModel;
 import com.booknet.api.feed.model.CommentModel;
 import com.booknet.api.guild.model.GuildSimplifiedModel;
 
@@ -32,56 +33,60 @@ public class NewsResponseBuilder implements INewsResponseBuilder{
     GuildSimplifiedModel guildSimplified;
 
     @Override
-    public void setId(String id) {
+    public INewsResponseBuilder setId(String id) {
         this.id = id;
+        return this;
     }
 
     @Override
-    public void setUserId(String userId) {
+    public INewsResponseBuilder setUserId(String userId) {
         this.userId = userId;
+        return this;
     }
 
     @Override
-    public void setType(int type) {
+    public INewsResponseBuilder setType(int type) {
         this.type = type;
+        return this;
     }
 
     @Override
-    public void setCaption(String caption) {
+    public INewsResponseBuilder setCaption(String caption) {
         this.caption = caption;
+        return this;
     }
 
     @Override
-    public void setNumberOfLike(int numberOfLikes) {
-        this.numberOfLikes = numberOfLikes;
-    }
-
-    @Override
-    public void setCommentList(LinkedList<CommentModel> commentList) {
+    public INewsResponseBuilder setCommentList(LinkedList<CommentModel> commentList) {
         this.commentList = commentList;
+        return this;
     }
 
     @Override
-    public void setCreatedDate(long createdDate) {
+    public INewsResponseBuilder setCreatedDate(long createdDate) {
         this.createdDate = createdDate;
+        return this;
     }
 
     @Override
-    public void setImagesUrl(ArrayList<String> imagesUrl) {
+    public INewsResponseBuilder setImagesUrl(ArrayList<String> imagesUrl) {
         this.imagesUrl = imagesUrl;
+        return this;
     }
 
     @Override
-    public void setReviewId(String reviewId) {
+    public INewsResponseBuilder setReviewId(String reviewId) {
         this.reviewId = reviewId;
+        return this;
     }
 
     @Override
-    public void setGuildSimplified(GuildSimplifiedModel guildSimplified) {
+    public INewsResponseBuilder setGuildSimplified(GuildSimplifiedModel guildSimplified) {
         this.guildSimplified = guildSimplified;
+        return this;
     }
 
     public NewsResponse build() {
-        return new NewsResponse(id, userId, type,caption,numberOfLikes, commentList,createdDate, imagesUrl, reviewId, guildSimplified);
+        return new NewsResponse(id, userId, type,caption,numberOfLikes, commentList, createdDate, imagesUrl, reviewId, guildSimplified);
     }
 }

@@ -6,6 +6,8 @@ import com.booknet.api.feed.repository.PostNewsRepository;
 import com.booknet.api.feed.repository.ReviewNewsRepository;
 import com.booknet.api.feed.request.create.*;
 import com.booknet.api.feed.request.FeedNotifyRequest;
+import com.booknet.api.feed.response.NewsResponse;
+import com.booknet.api.feed.response.NewsResponseBuilder;
 import com.booknet.api.profile.model.ProfileSimplifiedModel;
 import com.booknet.api.profile.repository.ProfileRepository;
 import com.booknet.constants.EvId;
@@ -163,48 +165,66 @@ public class FeedService {
         }
     }
 
+    public Collection<NewsResponse> getUserFeed(String userId) {
 
+        LinkedList<BaseNewsModel> newsList = new LinkedList<>();
+        LinkedList<NewsResponse> results = new LinkedList<>();
 
-    public Collection<BaseNewsModel> getUserFeed(String userId) {
-//        ArrayList newsCollection = (ArrayList) postNewsRepository.findBaseNewsByUserId(userId);
+        newsList.addAll(getPostNewsToFeed(userId));
+        newsList.addAll(getGuildNewsToFeed(userId));
+        newsList.addAll(getReviewNewsToFeed(userId));
 
-        ArrayList<BaseNewsModel> results = new ArrayList<>();
+        newsList.forEach(news -> {
+            results.add(mapToNewsResponse(news));
+        });
 
-//        newsCollection.forEach(result -> {
-//            int typeInt = ((BaseNews)result).getType();
-//            NewsType typeEnum = NewsType.fromCode(typeInt);
-//            switch (Objects.requireNonNull(typeEnum)) {
-//                case POST:
-//                    results.add((PostNews)result);
-//                    break;
-//                case GUILD:
-//                    results.add((GuildNews)result);
-//                    break;
-//                case REVIEW:
-//                    results.add((ReviewNews)result);
-//                    break;
-//                default:
-//                    break;
-//            }
-//        });
-
-        logger.info("get all post for user {}", Utils.json.stringify(results));
         return results;
     }
 
-    public void doNotify() {
-        EventCenter.pub(EvId.SAMPLE_EVENT);
+    public LinkedList<BaseNewsModel> getPostNewsToFeed(String userId) {
+        LinkedList<BaseNewsModel> results = new LinkedList<>();
+
+        var userProfile = profileRepository.findBy_id(userId).get();
+        userProfile.getFollowing().forEach(followingProfile -> {
+            results.addAll(postNewsRepository.findPostNewsModelByUserId(followingProfile.get_id()));
+        });
+
+        return results;
     }
 
-    public void doNotifyWithArgument(@NotNull FeedNotifyRequest req) {
-        EventCenter.pub(EvId.SAMPLE_EVENT_WITH_ARGS, req.getNumber());
+    public LinkedList<BaseNewsModel> getGuildNewsToFeed(String userId) {
+        LinkedList<BaseNewsModel> results = new LinkedList<>();
+
+        return  results;
     }
 
-    public void onNotified() {
-        logger.info("has been notified");
+    public LinkedList<BaseNewsModel> getReviewNewsToFeed(String userId) {
+        LinkedList<BaseNewsModel> results = new LinkedList<>();
+
+        return  results;
     }
 
-    public void onNotifiedWithArgument(Integer number) {
-        logger.info("has been notified with argument {}", number);
+    public NewsResponse mapToNewsResponse(BaseNewsModel news) {
+        NewsResponseBuilder builder = new NewsResponseBuilder();
+        builder.setId(news.get_id())
+                .setUserId(news.getUserId())
+                .setType(news.getType())
+                .setCaption(news.getCaption())
+                .setCreatedDate(news.getCreatedDate())
+                .setCommentList(news.getCommentList());
+        switch (NewsType.fromCode(news.getType())) {
+            case POST:
+                PostNewsModel postNews = (PostNewsModel) news;
+                builder.setImagesUrl(postNews.getImagesUrl());
+                break;
+            case GUILD:
+
+                break;
+            case REVIEW:
+
+                break;
+        }
+
+        return builder.build();
     }
 }

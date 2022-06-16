@@ -25,12 +25,16 @@ public class ProfileSimplifiedModel {
         return name;
     }
 
+    public String getAlias() {
+        return alias;
+    }
+
     public static ProfileSimplifiedModel getSimplified(ProfileModel profileModel) {
         return new ProfileSimplifiedModel(
                 profileModel.get_id()
                 , profileModel.getUrlImage()
-                , profileModel.getUsername()
                 , profileModel.getName()
+                , profileModel.getUsername()
         );
     }
 }

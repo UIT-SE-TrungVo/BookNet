@@ -51,10 +51,10 @@ public class ProfileModel {
     public ProfileModel() {
     }
 
-    public ProfileModel(@NotNull AppUser appUser, String name) {
+    public ProfileModel(@NotNull AppUser appUser) {
         this._id = appUser.get_id();
         this.username = appUser.getUsername();
-        this.name = name;
+        this.name = "";
 
         this.dob = ProfileDefaultConfig.DOB;
         this.gender = ProfileDefaultConfig.GENDER;
@@ -115,6 +115,22 @@ public class ProfileModel {
 
     public List<ProfileModel> getFollowing() {
         return following;
+    }
+
+    public List<ProfileSimplifiedModel> getFollowingSimplified() {
+        var followingSimplifiedList = new LinkedList<ProfileSimplifiedModel>();
+        getFollowing().forEach(profileModel -> {
+            followingSimplifiedList.add(ProfileSimplifiedModel.getSimplified(profileModel));
+        });
+        return followingSimplifiedList;
+    }
+
+    public List<ProfileSimplifiedModel> getFollowersSimplified() {
+        var followersSimplifiedList = new LinkedList<ProfileSimplifiedModel>();
+        getFollowers().forEach(profileModel -> {
+            followersSimplifiedList.add(ProfileSimplifiedModel.getSimplified(profileModel));
+        });
+        return followersSimplifiedList;
     }
 
     public List<ProfileModel> getFollowers() {

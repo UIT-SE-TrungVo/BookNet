@@ -18,16 +18,5 @@ public class FeedListener implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
-        EventCenter.sub(EvId.SAMPLE_EVENT, data -> onNotified());
-        EventCenter.sub(EvId.SAMPLE_EVENT_WITH_ARGS, this::onNotifiedWithArguments);
-    }
-
-    void onNotified() {
-        feedService.onNotified();
-    }
-
-    void onNotifiedWithArguments(Object argument) {
-        Integer number = (Integer)argument;
-        feedService.onNotifiedWithArgument(number);
     }
 }

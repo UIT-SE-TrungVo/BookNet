@@ -16,4 +16,7 @@ public class PostNewsModel extends BaseNewsModel {
         this.imagesUrl = imagesUrl;
     }
 
+    public ArrayList<String> getImagesUrl() {
+        return imagesUrl;
+    }
 }

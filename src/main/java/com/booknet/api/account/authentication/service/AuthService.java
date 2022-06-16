@@ -99,7 +99,7 @@ public class AuthService {
 
         profileRepository.findBy_id(userDetails.getId()).ifPresent(profileModel -> {
             response.setUrlImage(profileModel.getUrlImage());
-            response.setName(profileModel.getUsername());
+            response.setName(profileModel.getName());
             response.setGender(profileModel.getGender());
             response.setDob(profileModel.getDob());
             response.setBookShelf(profileModel.getBookShelf());
@@ -108,10 +108,11 @@ public class AuthService {
                     .map(GuildSimplifiedModel::getSimplified).collect(Collectors.toList());
             response.setGuilds(simplifiedGuild);
 
-//            var simplifiedFriend = profileModel.getListFriend().stream()
-//                    .map(ProfileSimplifiedModel::getSimplified).collect(Collectors.toList());
-//            response.setFriend(simplifiedFriend);
+            var followers = profileModel.getFollowersSimplified();
+            var following = profileModel.getFollowingSimplified();
 
+            response.setFollowers(followers);
+            response.setFollowing(following);
             response.setCurrentPoint(profileModel.getCurrentPoint());
             response.setHighestPoint(profileModel.getHighestPoint());
             response.setCreationDate(profileModel.getCreationDate());

@@ -3,6 +3,7 @@ package com.booknet.api.friend.service;
 import com.booknet.api.account.authentication.repository.AppUserRepository;
 import com.booknet.api.friend.payload.FollowRequest;
 import com.booknet.api.profile.model.ProfileModel;
+import com.booknet.api.profile.model.ProfileSimplifiedModel;
 import com.booknet.api.profile.repository.ProfileRepository;
 import com.booknet.base.payload.BaseResponse;
 import com.booknet.constants.ErrCode;
@@ -17,8 +18,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class FriendService {
-    private static final Logger logger = LoggerFactory.getLogger(FriendService.class);
+public class FollowService {
+    private static final Logger logger = LoggerFactory.getLogger(FollowService.class);
 
     @Autowired
     ProfileRepository profileRepository;
@@ -32,7 +33,7 @@ public class FriendService {
             return BaseResponse.error(ErrCode.USER_NOT_FOUND);
         }
 
-        List<ProfileModel> listFriend = user.getFollowers();
+        List<ProfileSimplifiedModel> listFriend = user.getFollowersSimplified();
         return BaseResponse.ok(listFriend);
     }
 
@@ -43,7 +44,7 @@ public class FriendService {
             return BaseResponse.error(ErrCode.USER_NOT_FOUND);
         }
 
-        List<ProfileModel> listFriend = user.getFollowing();
+        List<ProfileSimplifiedModel> listFriend = user.getFollowingSimplified();
         return BaseResponse.ok(listFriend);
     }
 
