@@ -11,6 +11,7 @@ import com.booknet.api.guild.request.GuildLeaveRequest;
 import com.booknet.api.guild.request.GuildViewRequest;
 import com.booknet.api.guild.response.GuiViewAllResponse;
 import com.booknet.api.guild.response.GuiViewResponse;
+import com.booknet.api.guild.response.GuildOverviewResponse;
 import com.booknet.base.payload.BaseResponse;
 import com.booknet.constants.ErrCode;
 import com.booknet.constants.EvId;
@@ -21,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,91 +56,102 @@ public class GuildService {
                 new GuiViewAllResponse(listIds, listNames, listDescription));
     }
 
-    public BaseResponse getSpecificGuildInfo(GuildViewRequest req) {
-        GuildModel guildId = req.getGuildId();
-        var userId = req.getUserId();
+    public BaseResponse getGuildList() {
+        var guildList = guildRepository.findAll();
 
-        logger.info("user {} attempts view guild {}", userId, guildId);
+        var result = new LinkedList<GuildOverviewResponse>();
 
-        var validation = new UserAndGuildValidation(userId, guildId);
-        if (validation.isError()) {
-            return BaseResponse.error(validation.getErrCode());
-        }
-        var user = validation.getUser();
-        var guild = validation.getGuild();
+        guildList.forEach(guild -> {
+            var response = new GuildOverviewResponse(guild.get_id(), guild.getImageUrl(), guild.getName(), guild.getDescription(), guild.getMembers());
+            result.add(response);
+        });
 
-        var name = guild.getName();
-        var description = guild.getDescription();
-        var numMember = guild.getMembers().size();
-        var news = guild.getNews();
-        var isMember = guild.isContainUser(user);
-
-        logger.info("user {} is {} a member of guild {}"
-                , guildId
-                , isMember ? "" : "not"
-                , guild.getName());
-
-        return BaseResponse.ok(new GuiViewResponse(
-                guildId
-                , name
-                , description
-                , numMember
-                , isMember ? news : null
-                , isMember
-        ));
+        return BaseResponse.ok(result);
     }
 
-    public BaseResponse requestJoinGuild(GuildJoinRequest req) {
-        GuildModel guildId = req.getGuildId();
-        var userId = req.getUserId();
-
-        logger.info("user {} attempts join guild {}", userId, guildId);
-
-        var validation = new UserAndGuildValidation(userId, guildId);
-        if (validation.isError()) {
-            return BaseResponse.error(validation.getErrCode());
-        }
-
-        var user = validation.getUser();
-        var guild = validation.getGuild();
-        var isMember = guild.isContainUser(user);
-        if (isMember) {
-            logger.error("user {} is already a member of guild {}", userId, guildId);
-            return BaseResponse.error(ErrCode.GUILD_ALREADY_JOINED);
-        } else {
-            guild.addMember(user);
-            guildRepository.save(guild);
-            logger.info("user {} JOIN guild {} SUCCESS", userId, guildId);
-            EventCenter.pub(EvId.USER_JOIN_GUILD, new GuildJoinEvData(userId, guild));
-            return BaseResponse.ok();
-        }
-    }
-
-    public BaseResponse requestLeaveGuild(GuildLeaveRequest req) {
-        GuildModel guildId = req.getGuildId();
-        var userId = req.getUserId();
-
-        logger.info("user {} attempts leave guild {}", userId, guildId);
-
-        var validation = new UserAndGuildValidation(userId, guildId);
-        if (validation.isError()) {
-            return BaseResponse.error(validation.getErrCode());
-        }
-
-        var user = validation.getUser();
-        var guild = validation.getGuild();
-        var isMember = guild.isContainUser(user);
-        if (!isMember) {
-            logger.error("user {} is not a member of guild {}", userId, guildId);
-            return BaseResponse.error(ErrCode.GUILD_NOT_A_MEMBER);
-        } else {
-            guild.removeMember(user);
-            guildRepository.save(guild);
-            EventCenter.pub(EvId.USER_LEAVE_GUILD, new GuildLeaveEvData(userId, guild));
-            logger.info("user {} LEAVE guild {} SUCCESS", userId, guildId);
-            return BaseResponse.ok();
-        }
-    }
+//    public BaseResponse getSpecificGuildInfo(GuildViewRequest req) {
+//        GuildModel guildId = req.getGuildId();
+//        var userId = req.getUserId();
+//
+//        logger.info("user {} attempts view guild {}", userId, guildId);
+//
+//        var validation = new UserAndGuildValidation(userId, guildId);
+//        if (validation.isError()) {
+//            return BaseResponse.error(validation.getErrCode());
+//        }
+//        var user = validation.getUser();
+//        var guild = validation.getGuild();
+//
+//        var name = guild.getName();
+//        var description = guild.getDescription();
+//        var numMember = guild.getMembers().size();
+//        var isMember = guild.isContainUser(user);
+//
+//        logger.info("user {} is {} a member of guild {}"
+//                , guildId
+//                , isMember ? "" : "not"
+//                , guild.getName());
+//
+//        return BaseResponse.ok(new GuiViewResponse(
+//                guildId
+//                , name
+//                , description
+//                , numMember
+//                , isMember
+//        ));
+//    }
+//
+//    public BaseResponse requestJoinGuild(GuildJoinRequest req) {
+//        GuildModel guildId = req.getGuildId();
+//        var userId = req.getUserId();
+//
+//        logger.info("user {} attempts join guild {}", userId, guildId);
+//
+//        var validation = new UserAndGuildValidation(userId, guildId);
+//        if (validation.isError()) {
+//            return BaseResponse.error(validation.getErrCode());
+//        }
+//
+//        var user = validation.getUser();
+//        var guild = validation.getGuild();
+//        var isMember = guild.isContainUser(user);
+//        if (isMember) {
+//            logger.error("user {} is already a member of guild {}", userId, guildId);
+//            return BaseResponse.error(ErrCode.GUILD_ALREADY_JOINED);
+//        } else {
+//            guild.addMember(user);
+//            guildRepository.save(guild);
+//            logger.info("user {} JOIN guild {} SUCCESS", userId, guildId);
+//            EventCenter.pub(EvId.USER_JOIN_GUILD, new GuildJoinEvData(userId, guild));
+//            return BaseResponse.ok();
+//        }
+//    }
+//
+//    public BaseResponse requestLeaveGuild(GuildLeaveRequest req) {
+//        GuildModel guildId = req.getGuildId();
+//        var userId = req.getUserId();
+//
+//        logger.info("user {} attempts leave guild {}", userId, guildId);
+//
+//        var validation = new UserAndGuildValidation(userId, guildId);
+//        if (validation.isError()) {
+//            return BaseResponse.error(validation.getErrCode());
+//        }
+//
+//        var user = validation.getUser();
+//        var guild = validation.getGuild();
+//        var isMember = guild.isContainUser(user);
+//        if (!isMember) {
+//            logger.error("user {} is not a member of guild {}", userId, guildId);
+//            return BaseResponse.error(ErrCode.GUILD_NOT_A_MEMBER);
+//        } else {
+//            guild.removeMember(user);
+//            guildRepository.save(guild);
+//            EventCenter.pub(EvId.USER_LEAVE_GUILD, new GuildLeaveEvData(userId, guild));
+//            logger.info("user {} LEAVE guild {} SUCCESS", userId, guildId);
+//            return BaseResponse.ok();
+//        }
+//    }
 
     class UserAndGuildValidation {
         Optional<AppUser> user;

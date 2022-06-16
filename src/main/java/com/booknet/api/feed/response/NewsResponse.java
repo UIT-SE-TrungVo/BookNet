@@ -14,11 +14,11 @@ public class NewsResponse {
 
     private String caption;
 
-    private int numberOfLikes;
-
     private LinkedList<CommentModel> commentList;
 
-    protected long createdDate;
+    private LinkedList<String> likeUserIdList;
+
+    private long createDate;
 
     //region post
     ArrayList<String> imagesUrl;
@@ -29,14 +29,14 @@ public class NewsResponse {
     //region guild
     GuildSimplifiedModel guildSimplified;
 
-    public NewsResponse(String _id, String userId, int type, String caption, int numberOfLikes, LinkedList<CommentModel> commentList, long createdDate, ArrayList<String> imagesUrl, String reviewId, GuildSimplifiedModel guildSimplified) {
+    public NewsResponse(String _id, String userId, int type, String caption, LinkedList<String> likeUserIdList, LinkedList<CommentModel> commentList, long createDate, ArrayList<String> imagesUrl, String reviewId, GuildSimplifiedModel guildSimplified) {
         this.id = _id;
         this.userId = userId;
         this.type = type;
         this.caption = caption;
-        this.numberOfLikes = numberOfLikes;
+        this.likeUserIdList = likeUserIdList;
         this.commentList = commentList;
-        this.createdDate = createdDate;
+        this.createDate = createDate;
         this.imagesUrl = imagesUrl;
         this.reviewId = reviewId;
         this.guildSimplified = guildSimplified;
@@ -58,16 +58,16 @@ public class NewsResponse {
         return caption;
     }
 
-    public int getNumberOfLikes() {
-        return numberOfLikes;
+    public LinkedList<String> getLikeUserIdList() {
+        return likeUserIdList;
     }
 
     public LinkedList<CommentModel> getCommentList() {
         return commentList;
     }
 
-    public long getCreatedDate() {
-        return createdDate;
+    public long getCreateDate() {
+        return createDate;
     }
 
     public ArrayList<String> getImagesUrl() {

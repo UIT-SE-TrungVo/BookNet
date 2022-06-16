@@ -17,7 +17,7 @@ public class NewsResponseBuilder implements INewsResponseBuilder{
 
     private String caption;
 
-    private int numberOfLikes;
+    private LinkedList<String> likeUserIdList;
 
     private LinkedList<CommentModel> commentList;
 
@@ -57,6 +57,12 @@ public class NewsResponseBuilder implements INewsResponseBuilder{
     }
 
     @Override
+    public INewsResponseBuilder setUserIdLikeList(LinkedList<String> likeUserIdList) {
+        this.likeUserIdList = likeUserIdList;
+        return this;
+    }
+
+    @Override
     public INewsResponseBuilder setCommentList(LinkedList<CommentModel> commentList) {
         this.commentList = commentList;
         return this;
@@ -87,6 +93,6 @@ public class NewsResponseBuilder implements INewsResponseBuilder{
     }
 
     public NewsResponse build() {
-        return new NewsResponse(id, userId, type,caption,numberOfLikes, commentList, createdDate, imagesUrl, reviewId, guildSimplified);
+        return new NewsResponse(id, userId, type, caption, likeUserIdList, commentList, createdDate, imagesUrl, reviewId, guildSimplified);
     }
 }

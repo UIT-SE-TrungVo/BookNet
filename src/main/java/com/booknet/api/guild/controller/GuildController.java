@@ -19,28 +19,34 @@ public class GuildController {
     @Autowired
     GuildService guildService;
 
+//    @GetMapping
+//    public ResponseEntity<?> getListGuild() {
+//        var response = guildService.getAllGuildInfo();
+//        return ResponseEntity.ok(response);
+//    }
+
     @GetMapping
-    public ResponseEntity<?> getListGuild() {
-        var response = guildService.getAllGuildInfo();
+    public ResponseEntity<?> getGuildList() {
+        var response = guildService.getGuildList();
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/view")
-    public ResponseEntity<?> getGuildInfo(@Valid @RequestBody GuildViewRequest req) {
-        var response = guildService.getSpecificGuildInfo(req);
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/join")
-    public ResponseEntity<?> joinGuild(@Valid @RequestBody GuildJoinRequest req) {
-        var response = guildService.requestJoinGuild(req);
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/leave")
-    public ResponseEntity<?> leaveGuild(@Valid @RequestBody GuildLeaveRequest req) {
-        var response = guildService.requestLeaveGuild(req);
-        return ResponseEntity.ok(response);
-    }
+//    @GetMapping("/view")
+//    public ResponseEntity<?> getGuildInfo(@Valid @RequestBody GuildViewRequest req) {
+//        var response = guildService.getSpecificGuildInfo(req);
+//        return ResponseEntity.ok(response);
+//    }
+//
+//    @PostMapping("/join")
+//    public ResponseEntity<?> joinGuild(@Valid @RequestBody GuildJoinRequest req) {
+//        var response = guildService.requestJoinGuild(req);
+//        return ResponseEntity.ok(response);
+//    }
+//
+//    @PostMapping("/leave")
+//    public ResponseEntity<?> leaveGuild(@Valid @RequestBody GuildLeaveRequest req) {
+//        var response = guildService.requestLeaveGuild(req);
+//        return ResponseEntity.ok(response);
+//    }
 
 }

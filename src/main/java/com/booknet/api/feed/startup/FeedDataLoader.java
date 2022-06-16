@@ -21,7 +21,7 @@ public class FeedDataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
-        this.postNewsRepository.deleteAll();
+//        this.postNewsRepository.deleteAll();
 //
 //        final int NUM_GENERATED_MODEL = 10;
 //        for (int i = 0; i < NUM_GENERATED_MODEL; i++) {

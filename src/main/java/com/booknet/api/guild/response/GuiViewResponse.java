@@ -24,14 +24,12 @@ public class GuiViewResponse {
             , String name
             , String description
             , int numMembers
-            , List<GuildNewsModel> news
             , boolean isJoined
     ) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.numMembers = numMembers;
-        this.news = news;
         this.isJoined = isJoined;
     }
 

@@ -210,6 +210,7 @@ public class FeedService {
                 .setUserId(news.getUserId())
                 .setType(news.getType())
                 .setCaption(news.getCaption())
+                .setUserIdLikeList(news.getLikeUserIdList())
                 .setCreatedDate(news.getCreatedDate())
                 .setCommentList(news.getCommentList());
         switch (NewsType.fromCode(news.getType())) {

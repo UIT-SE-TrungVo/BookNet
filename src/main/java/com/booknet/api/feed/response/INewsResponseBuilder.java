@@ -11,6 +11,7 @@ public interface INewsResponseBuilder {
     INewsResponseBuilder setUserId(String userId);
     INewsResponseBuilder setType(int type);
     INewsResponseBuilder setCaption(String caption);
+    INewsResponseBuilder setUserIdLikeList(LinkedList<String> likeUserIdList);
     INewsResponseBuilder setCommentList(LinkedList<CommentModel> commentList);
     INewsResponseBuilder setCreatedDate(long createdDate);
     INewsResponseBuilder setImagesUrl(ArrayList<String> imagesUrl);

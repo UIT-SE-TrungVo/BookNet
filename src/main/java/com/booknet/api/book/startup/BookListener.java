@@ -18,16 +18,5 @@ public class BookListener implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
-        EventCenter.sub(EvId.SAMPLE_EVENT, data -> onNotified());
-        EventCenter.sub(EvId.SAMPLE_EVENT_WITH_ARGS, this::onNotifiedWithArguments);
-    }
-
-    void onNotified() {
-        postService.onNotified();
-    }
-
-    void onNotifiedWithArguments(Object argument) {
-        Integer number = (Integer)argument;
-        postService.onNotifiedWithArgument(number);
     }
 }
