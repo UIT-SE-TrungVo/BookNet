@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Document(collection = "profiles")
@@ -21,9 +22,9 @@ public class ProfileModel {
 
     String urlImage;
 
-    String name;
+    String username;
 
-    String alias;
+    String name;
 
     Integer gender;
 
@@ -36,7 +37,10 @@ public class ProfileModel {
     List<GuildModel> guilds = new ArrayList<>();
 
     @DocumentReference(lazy = true, collection = "users")
-    List<ProfileModel> friend = new ArrayList<>();
+    List<ProfileModel> following = new ArrayList<>();
+
+    @DocumentReference(lazy = true, collection = "users")
+    List<ProfileModel> followers = new ArrayList<>();
 
     Integer currentPoint = 0;
 
@@ -47,13 +51,16 @@ public class ProfileModel {
     public ProfileModel() {
     }
 
-    public ProfileModel(@NotNull AppUser appUser, String alias) {
+    public ProfileModel(@NotNull AppUser appUser, String name) {
         this._id = appUser.get_id();
-        this.name = appUser.getUsername();
-        this.alias = alias;
+        this.username = appUser.getUsername();
+        this.name = name;
 
         this.dob = ProfileDefaultConfig.DOB;
         this.gender = ProfileDefaultConfig.GENDER;
+
+        following = new LinkedList<>();
+        followers = new LinkedList<>();
 
         this.creationDate = Utils.time.getCurrentTimestamp();
     }
@@ -74,12 +81,12 @@ public class ProfileModel {
         this.urlImage = urlImage;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Integer getGender() {
@@ -106,20 +113,28 @@ public class ProfileModel {
         this.bookShelf = bookShelf;
     }
 
+    public List<ProfileModel> getFollowing() {
+        return following;
+    }
+
+    public List<ProfileModel> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowing(List<ProfileModel> following) {
+        this.following = following;
+    }
+
+    public void setFollowers(List<ProfileModel> followers) {
+        this.followers = followers;
+    }
+
     public List<GuildModel> getListGuild() {
         return guilds;
     }
 
     public void setListGuild(List<GuildModel> guilds) {
         this.guilds = guilds;
-    }
-
-    public List<ProfileModel> getListFriend() {
-        return friend;
-    }
-
-    public void setListFriend(List<ProfileModel> friend) {
-        this.friend = friend;
     }
 
     public Integer getCurrentPoint() {
@@ -146,11 +161,11 @@ public class ProfileModel {
         this.creationDate = creationDate;
     }
 
-    public String getAlias() {
-        return alias;
+    public String getName() {
+        return name;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -74,7 +74,7 @@ public class FeedController {
             return ResponseEntity.badRequest().body(new BaseResponse( null));
     }
 
-    @PostMapping("/reply-comment")
+    @PostMapping("/reply_comment")
     public ResponseEntity<?> createReplyComment(@Valid @RequestBody ReplyCommentCreateRequest req) {
         ReplyCommentModel model = feedService.createReplyComment(req);
         if (model != null)

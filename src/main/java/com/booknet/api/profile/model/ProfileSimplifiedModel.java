@@ -1,20 +1,20 @@
 package com.booknet.api.profile.model;
 
 public class ProfileSimplifiedModel {
-    String _id;
+    String id;
     String urlImage;
     String name;
     String alias;
 
-    public ProfileSimplifiedModel(String _id, String urlImage, String name, String alias) {
-        this._id = _id;
+    public ProfileSimplifiedModel(String id, String urlImage, String name, String alias) {
+        this.id = id;
         this.urlImage = urlImage;
         this.name = name;
         this.alias = alias;
     }
 
-    public String get_id() {
-        return _id;
+    public String getId() {
+        return id;
     }
 
     public String getUrlImage() {
@@ -29,8 +29,8 @@ public class ProfileSimplifiedModel {
         return new ProfileSimplifiedModel(
                 profileModel.get_id()
                 , profileModel.getUrlImage()
+                , profileModel.getUsername()
                 , profileModel.getName()
-                , profileModel.getAlias()
         );
     }
 }

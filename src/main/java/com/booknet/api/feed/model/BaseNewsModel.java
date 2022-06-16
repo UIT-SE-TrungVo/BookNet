@@ -106,7 +106,7 @@ public class BaseNewsModel {
 
     public ReplyCommentModel addReplyCommentAndGet(String commentId, String content, ProfileSimplifiedModel profileSimplified) {
         for (CommentModel comment: commentList) {
-            if (comment.get_id().equals(commentId)) {
+            if (comment.getId().equals(commentId)) {
                 return comment.addReplyCommentAndGet(content, profileSimplified);
             }
         }

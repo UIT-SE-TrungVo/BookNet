@@ -1,7 +1,6 @@
 package com.booknet.api.friend.controller;
 
-import com.booknet.api.friend.payload.FriendAddRequest;
-import com.booknet.api.friend.payload.FriendRemoveRequest;
+import com.booknet.api.friend.payload.FollowRequest;
 import com.booknet.api.friend.service.FriendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,27 +10,33 @@ import javax.validation.Valid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/friends")
+@RequestMapping("/api/follow")
 public class FriendController {
 
     @Autowired
     FriendService friendService;
 
-//    @GetMapping("/id={id}")
-//    public ResponseEntity<?> getListFriend(@PathVariable("id") String userId) {
-//        var response = friendService.getListFriend(userId);
+    @GetMapping("/followers")
+    public ResponseEntity<?> getFollowers(@Valid @RequestBody String userId) {
+        var response = friendService.getFollowers(userId);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/following")
+    public ResponseEntity<?> getFollowing(@Valid @RequestBody String userId) {
+        var response = friendService.getFollowing(userId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> follow(@Valid @RequestBody FollowRequest req) {
+        var response = friendService.follow(req);
+        return ResponseEntity.ok(response);
+    }
+
+//    @PostMapping("/unfollow")
+//    public ResponseEntity<?> removeFriend(@Valid @RequestBody UnfollowRequest req) {
+//        var response = friendService.removeFriend(req);
 //        return ResponseEntity.ok(response);
 //    }
-
-    @PostMapping("/add")
-    public ResponseEntity<?> addFriend(@Valid @RequestBody FriendAddRequest req) {
-        var response = friendService.addFriend(req);
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/remove")
-    public ResponseEntity<?> removeFriend(@Valid @RequestBody FriendRemoveRequest req) {
-        var response = friendService.removeFriend(req);
-        return ResponseEntity.ok(response);
-    }
 }

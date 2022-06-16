@@ -4,12 +4,14 @@ import com.booknet.api.profile.model.ProfileSimplifiedModel;
 import com.booknet.constants.IdPrefix;
 import com.booknet.utils.IdGenerator;
 
+import java.time.Instant;
+
 public class ReplyCommentModel {
     private String id;
 
     private String content;
 
-    private String createdDate;
+    private long createdDate;
 
     private ProfileSimplifiedModel profileSimplified;
 
@@ -17,6 +19,7 @@ public class ReplyCommentModel {
         this.id = IdGenerator.createNew(IdPrefix.REPLY_COMMENT);
         this.content = content;
         this.profileSimplified = profileSimplified;
+        this.createdDate = Instant.now().toEpochMilli();
     }
 
     public ProfileSimplifiedModel getProfileSimplified() {
@@ -35,11 +38,11 @@ public class ReplyCommentModel {
         this.id = id;
     }
 
-    public String getCreatedDate() {
+    public long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(long createdDate) {
         this.createdDate = createdDate;
     }
 

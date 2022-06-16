@@ -54,7 +54,7 @@ public class ProfileService {
         } else {
             var profile = this.getOrCreateProfile(user);
             profile.setUrlImage(request.getUrlImage());
-            profile.setName(request.getName());
+            profile.setUsername(request.getName());
             profile.setDob(request.getDob());
             profile.setGender(request.getGender());
             profileRepository.save(profile);

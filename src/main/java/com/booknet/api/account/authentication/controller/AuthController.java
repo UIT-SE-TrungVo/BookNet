@@ -47,7 +47,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/signup/submit-verification")
+    @PostMapping("/signup/submit_verification")
     public ResponseEntity<?> verifyAccount(@Valid @RequestBody SignupVerifyRequest req) {
         var error = authService.verifyAccount(req);
         if (error == ErrCode.NONE) {
